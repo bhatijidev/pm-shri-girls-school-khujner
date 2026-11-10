@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 
 export default function BookCard({ book }) {
   const [imgError, setImgError] = useState(false);
-  const isExternal = book.link_type === 'external';
-  const targetUrl = book.link_type === 'pdf' ? (book.pdf_file_url || book.external_url) : book.external_url;
+  const targetUrl = book.pdf_file_url || book.external_url;
+  const isDirectPdf = targetUrl && (targetUrl.toLowerCase().endsWith('.pdf') || targetUrl.includes('/pdf/'));
+  const isExternal = book.link_type === 'external' && !isDirectPdf;
 
   // Fallback category colors if image fails
   const categoryGradients = {
@@ -121,10 +122,16 @@ export default function BookCard({ book }) {
             rel="noopener noreferrer"
             className="w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 transition-all duration-200 bg-gradient-to-r from-brand-orange to-brand-red text-white hover:opacity-95 shadow-md shadow-orange-500/20"
           >
-            {isExternal ? (
+            {isDirectPdf ? (
+              <>
+                <BookOpen className="w-4 h-4 text-white" />
+                <span>Open PDF Book (सीधे PDF पढ़ें)</span>
+                <ExternalLink className="w-3 h-3 text-orange-200" />
+              </>
+            ) : isExternal ? (
               <>
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>Read on Official Website</span>
+                <span>Open Official Portal</span>
                 <ExternalLink className="w-3 h-3" />
               </>
             ) : (
