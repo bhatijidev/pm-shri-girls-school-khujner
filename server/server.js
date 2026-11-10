@@ -19,9 +19,12 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS configuration
+// CORS configuration: Allow localhost, tunnels, and production domains
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000', 'http://127.0.0.1:5173'],
+  origin: (origin, callback) => {
+    // Allow same-origin, curl, mobile, or any production domain
+    callback(null, true);
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -29,6 +32,7 @@ app.use(cors({
 
 // Security headers
 app.use(helmet({
+  contentSecurityPolicy: false,
   crossOriginResourcePolicy: { policy: 'cross-origin' }
 }));
 
@@ -66,7 +70,24 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// 404 handler
+// Serve frontend static assets from client/dist in production
+const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+app.use(express.static(clientDistPath, {
+  maxAge: '1d'
+}));
+
+// React Router SPA Catch-all: send index.html for any client navigation route
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+    return next();
+  }
+  const indexPath = path.join(clientDistPath, 'index.html');
+  res.sendFile(indexPath, (err) => {
+    if (err) next();
+  });
+});
+
+// 404 handler for unmatched API routes
 app.use((req, res) => {
   res.status(404).json({
     success: false,

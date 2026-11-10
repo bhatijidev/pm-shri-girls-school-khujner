@@ -1,0 +1,15 @@
+{
+  "name": "pm-shri-girls-school-khujner",
+  "version": "1.0.0",
+  "description": "Official Website and Digital E-Library for PM SHRI Girls HSS Khujner (M.P.)",
+  "type": "module",
+  "scripts": {
+    "install:all": "cd client && npm install && cd ../server && npm install",
+    "build": "cd client && npm install && npm run build && cd ../server && npm install",
+    "start": "node server/server.js",
+    "seed": "node server/seeds/seed.js"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
