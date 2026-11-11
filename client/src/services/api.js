@@ -120,16 +120,22 @@ export const noticeService = {
   },
   create: async (data) => {
     invalidateClientCache('/notices');
+    invalidateClientCache('/books/stats');
+    invalidateClientCache('/books/public-stats');
     const res = await api.post('/notices', data);
     return res.data;
   },
   update: async (id, data) => {
     invalidateClientCache('/notices');
+    invalidateClientCache('/books/stats');
+    invalidateClientCache('/books/public-stats');
     const res = await api.put(`/notices/${id}`, data);
     return res.data;
   },
   delete: async (id) => {
     invalidateClientCache('/notices');
+    invalidateClientCache('/books/stats');
+    invalidateClientCache('/books/public-stats');
     const res = await api.delete(`/notices/${id}`);
     return res.data;
   }
@@ -151,21 +157,42 @@ export const bookService = {
   },
   create: async (data) => {
     invalidateClientCache('/books');
+    invalidateClientCache('/books/stats');
+    invalidateClientCache('/books/public-stats');
     const res = await api.post('/books', data);
     return res.data;
   },
   update: async (id, data) => {
     invalidateClientCache('/books');
+    invalidateClientCache('/books/stats');
+    invalidateClientCache('/books/public-stats');
     const res = await api.put(`/books/${id}`, data);
     return res.data;
   },
   delete: async (id) => {
     invalidateClientCache('/books');
+    invalidateClientCache('/books/stats');
+    invalidateClientCache('/books/public-stats');
     const res = await api.delete(`/books/${id}`);
     return res.data;
   },
   getStats: async () => {
-    return cachedGet('/books/stats', {}, 30000);
+    // Admin Dashboard stats: always live and dynamic without stale cache
+    const res = await api.get('/books/stats', {
+      params: { _t: Date.now() },
+      headers: { 'Cache-Control': 'no-cache, no-store' }
+    });
+    return res.data;
+  },
+  getPublicStats: async () => {
+    return cachedGet('/books/public-stats', {}, 15000);
+  },
+  recordView: async (id) => {
+    try {
+      await api.post(`/books/${id}/view`);
+    } catch {
+      // Non-blocking
+    }
   }
 };
 

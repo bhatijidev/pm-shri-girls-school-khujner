@@ -383,17 +383,61 @@ export const deleteBook = (req, res) => {
   }
 };
 
-// GET /api/books/stats — dashboard stats
-export const getDashboardStats = (req, res) => {
+// GET /api/books/public-stats — public stats for homepage
+export const getPublicStats = (req, res) => {
   try {
-    const cacheKey = 'books:stats';
+    const cacheKey = 'public:stats';
     const cached = apiCache.get(cacheKey);
     if (cached) {
-      res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=60');
-      res.setHeader('X-Cache', 'HIT');
       return res.json(cached);
     }
 
+    const totalBooks = db.prepare('SELECT COUNT(*) as count FROM books WHERE is_active = 1').get().count;
+    const totalNotices = db.prepare('SELECT COUNT(*) as count FROM notices WHERE is_active = 1').get().count;
+    const urgentNotices = db.prepare('SELECT COUNT(*) as count FROM notices WHERE is_active = 1 AND is_urgent = 1').get().count;
+    const totalViews = db.prepare('SELECT COALESCE(SUM(view_count), 0) as count FROM books WHERE is_active = 1').get().count;
+
+    const payload = {
+      success: true,
+      data: {
+        totalBooks,
+        totalNotices,
+        urgentNotices,
+        totalViews,
+        enrolledStudents: 550,
+        boardPassRate: 96,
+        facultyCount: 30
+      }
+    };
+
+    apiCache.set(cacheKey, payload, 30);
+    return res.json(payload);
+  } catch (error) {
+    console.error('Public stats error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+};
+
+// POST /api/books/:id/view — record a dynamic read/view of a book
+export const recordBookView = (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = db.prepare('UPDATE books SET view_count = view_count + 1 WHERE id = ? AND is_active = 1').run(id);
+    if (result.changes === 0) {
+      return res.status(404).json({ success: false, message: 'Book not found' });
+    }
+    apiCache.delete('books:stats');
+    apiCache.delete('public:stats');
+    return res.json({ success: true, message: 'Book read recorded.' });
+  } catch (error) {
+    console.error('Record book view error:', error);
+    return res.status(500).json({ success: false, message: 'Internal server error.' });
+  }
+};
+
+// GET /api/books/stats — dashboard stats (always live & dynamic for admin)
+export const getDashboardStats = (req, res) => {
+  try {
     const totalBooks = db.prepare('SELECT COUNT(*) as count FROM books WHERE is_active = 1').get().count;
     const totalNotices = db.prepare('SELECT COUNT(*) as count FROM notices WHERE is_active = 1').get().count;
     const totalCategories = db.prepare('SELECT COUNT(*) as count FROM categories').get().count;
@@ -429,9 +473,10 @@ export const getDashboardStats = (req, res) => {
       }
     };
 
-    apiCache.set(cacheKey, responsePayload, 30);
-    res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=60');
-    res.setHeader('X-Cache', 'MISS');
+    // Ensure the browser NEVER serves stale cached responses in the Admin CMS
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
     return res.json(responsePayload);
   } catch (error) {
     console.error('Get dashboard stats error:', error);

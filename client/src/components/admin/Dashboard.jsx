@@ -1,29 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { bookService } from '../../services/api';
-import { BookOpen, Bell, Eye, AlertCircle, PlusCircle, Sparkles, TrendingUp, ShieldCheck } from 'lucide-react';
+import { BookOpen, Bell, Eye, AlertCircle, PlusCircle, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
 import Loading from '../ui/Loading';
 
 export default function Dashboard({ setActiveTab }) {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [refetching, setRefetching] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(new Date());
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const res = await bookService.getStats();
-        if (res.success) {
-          setStats(res.data);
-        }
-      } catch (err) {
-        console.error('Error fetching dashboard stats:', err);
-      } finally {
-        setLoading(false);
+  const fetchStats = useCallback(async (isManual = false) => {
+    if (isManual) setRefetching(true);
+    try {
+      const res = await bookService.getStats();
+      if (res.success) {
+        setStats(res.data);
+        setLastUpdated(new Date());
       }
-    };
-    fetchStats();
+    } catch (err) {
+      console.error('Error fetching dashboard stats:', err);
+    } finally {
+      setLoading(false);
+      if (isManual) {
+        setTimeout(() => setRefetching(false), 500);
+      }
+    }
   }, []);
 
-  if (loading) return <Loading text="Loading admin analytics..." />;
+  useEffect(() => {
+    fetchStats();
+
+    // Auto-refresh stats when admin returns to tab or window
+    const handleFocus = () => fetchStats(false);
+    window.addEventListener('focus', handleFocus);
+
+    // Periodic live sync every 20 seconds
+    const interval = setInterval(() => fetchStats(false), 20000);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      clearInterval(interval);
+    };
+  }, [fetchStats]);
+
+  if (loading && !stats) return <Loading text="Loading live admin analytics..." />;
 
   const statCards = [
     {
@@ -32,6 +52,7 @@ export default function Dashboard({ setActiveTab }) {
       icon: BookOpen,
       color: 'bg-blue-500',
       textColor: 'text-blue-600',
+      subtitle: 'Live in E-Library catalog',
       action: () => setActiveTab('books')
     },
     {
@@ -40,6 +61,7 @@ export default function Dashboard({ setActiveTab }) {
       icon: Bell,
       color: 'bg-emerald-500',
       textColor: 'text-emerald-600',
+      subtitle: 'Visible on student portal',
       action: () => setActiveTab('notices')
     },
     {
@@ -48,6 +70,7 @@ export default function Dashboard({ setActiveTab }) {
       icon: AlertCircle,
       color: 'bg-rose-500',
       textColor: 'text-rose-600',
+      subtitle: 'Blinking red top banner',
       action: () => setActiveTab('notices')
     },
     {
@@ -55,7 +78,8 @@ export default function Dashboard({ setActiveTab }) {
       value: stats?.totalViews || 0,
       icon: Eye,
       color: 'bg-purple-500',
-      textColor: 'text-purple-600'
+      textColor: 'text-purple-600',
+      subtitle: 'Real user reads recorded'
     }
   ];
 
@@ -65,10 +89,17 @@ export default function Dashboard({ setActiveTab }) {
       {/* Welcome Banner */}
       <div className="bg-gradient-to-r from-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white flex flex-col md:flex-row items-start md:items-center justify-between gap-6 shadow-md">
         <div className="space-y-2">
-          <div className="inline-flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>PM SHRI Khujner CMS</span>
+          <div className="flex items-center space-x-2">
+            <div className="inline-flex items-center space-x-1.5 text-brand-orange text-xs font-bold uppercase tracking-wider bg-white/10 px-3 py-1 rounded-full">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>PM SHRI Khujner CMS</span>
+            </div>
+            <span className="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>Dynamic DB Sync</span>
+            </span>
           </div>
+
           <h2 className="text-2xl sm:text-3xl font-heading font-extrabold text-white">
             Welcome, School Administrator
           </h2>
@@ -77,7 +108,17 @@ export default function Dashboard({ setActiveTab }) {
           </p>
         </div>
 
-        <div className="flex items-center space-x-3 flex-shrink-0">
+        <div className="flex flex-wrap items-center gap-3 flex-shrink-0">
+          <button
+            onClick={() => fetchStats(true)}
+            disabled={refetching}
+            className="flex items-center space-x-2 bg-white/10 hover:bg-white/20 text-white text-xs font-bold px-3.5 py-3 rounded-xl border border-white/20 transition-all"
+            title="Refresh database counters now"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${refetching ? 'animate-spin text-orange-400' : ''}`} />
+            <span>{refetching ? 'Syncing...' : 'Live Refresh'}</span>
+          </button>
+
           <button
             onClick={() => setActiveTab('notices')}
             className="flex items-center space-x-2 bg-gradient-to-r from-brand-orange to-brand-red text-white text-xs font-bold px-4 py-3 rounded-xl shadow-md hover:opacity-95 transition-all"
@@ -95,6 +136,17 @@ export default function Dashboard({ setActiveTab }) {
         </div>
       </div>
 
+      {/* Sync Status Header */}
+      <div className="flex items-center justify-between px-1">
+        <div className="flex items-center space-x-2 text-xs font-bold text-slate-500">
+          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500" />
+          <span>Real-Time Database Counters</span>
+        </div>
+        <span className="text-[11px] text-slate-400">
+          Synced at {lastUpdated.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        </span>
+      </div>
+
       {/* Stats 4-Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {statCards.map((card, idx) => {
@@ -105,7 +157,7 @@ export default function Dashboard({ setActiveTab }) {
               onClick={card.action}
               className={`bg-white rounded-2xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-all ${card.action ? 'cursor-pointer hover:border-brand-orange/40' : ''}`}
             >
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center justify-between mb-3">
                 <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
                   {card.title}
                 </span>
@@ -113,9 +165,14 @@ export default function Dashboard({ setActiveTab }) {
                   <Icon className="w-5 h-5" />
                 </div>
               </div>
-              <div className="text-3xl font-heading font-extrabold text-slate-900">
-                {card.value}
+              <div className="text-3xl font-heading font-extrabold text-slate-900 mb-1">
+                {card.value.toLocaleString('en-IN')}
               </div>
+              {card.subtitle && (
+                <p className="text-[11px] text-slate-400 font-medium">
+                  {card.subtitle}
+                </p>
+              )}
             </div>
           );
         })}

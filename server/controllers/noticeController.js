@@ -217,6 +217,8 @@ export const createNotice = (req, res) => {
 
     const notice = db.prepare('SELECT * FROM notices WHERE id = ?').get(result.lastInsertRowid);
     apiCache.clearPrefix('notices:');
+    apiCache.delete('books:stats');
+    apiCache.delete('public:stats');
 
     return res.status(201).json({
       success: true,
@@ -271,6 +273,8 @@ export const updateNotice = (req, res) => {
 
     const updated = db.prepare('SELECT * FROM notices WHERE id = ?').get(id);
     apiCache.clearPrefix('notices:');
+    apiCache.delete('books:stats');
+    apiCache.delete('public:stats');
 
     return res.json({
       success: true,
@@ -302,6 +306,8 @@ export const deleteNotice = (req, res) => {
 
     db.prepare('UPDATE notices SET is_active = 0, updated_at = datetime(\'now\') WHERE id = ?').run(id);
     apiCache.clearPrefix('notices:');
+    apiCache.delete('books:stats');
+    apiCache.delete('public:stats');
 
     return res.json({
       success: true,

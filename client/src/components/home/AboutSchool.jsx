@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Award, Users, BookMarked, GraduationCap, Sparkles, ShieldCheck } from 'lucide-react';
 import AnimatedCounter from '../ui/AnimatedCounter';
+import { bookService } from '../../services/api';
 
 export default function AboutSchool() {
+  const [stats, setStats] = useState({
+    enrolledStudents: 550,
+    boardPassRate: 96,
+    facultyCount: 30,
+    totalBooks: 503
+  });
+
+  useEffect(() => {
+    bookService.getPublicStats()
+      .then((res) => {
+        if (res?.success && res?.data) {
+          setStats((prev) => ({ ...prev, ...res.data }));
+        }
+      })
+      .catch(() => {});
+  }, []);
   const highlights = [
     'Selected under the Centrally Sponsored PM SHRI scheme by the Ministry of Education, Govt. of India',
     'Aligned with National Education Policy (NEP 2020) focusing on experiential, multidisciplinary learning',
@@ -108,7 +125,7 @@ export default function AboutSchool() {
             <div className="grid grid-cols-2 gap-4">
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
                 <div className="text-3xl font-extrabold text-slate-900">
-                  <AnimatedCounter end={550} suffix="+" />
+                  <AnimatedCounter end={stats.enrolledStudents} suffix="+" />
                 </div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
                   Enrolled Students
@@ -118,7 +135,7 @@ export default function AboutSchool() {
 
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
                 <div className="text-3xl font-extrabold text-brand-orange">
-                  <AnimatedCounter end={96} suffix="%" />
+                  <AnimatedCounter end={stats.boardPassRate} suffix="%" />
                 </div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
                   Board Pass Rate
@@ -128,7 +145,7 @@ export default function AboutSchool() {
 
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
                 <div className="text-3xl font-extrabold text-blue-600">
-                  <AnimatedCounter end={30} suffix="" />
+                  <AnimatedCounter end={stats.facultyCount} suffix="" />
                 </div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
                   Faculty Members
@@ -138,7 +155,7 @@ export default function AboutSchool() {
 
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
                 <div className="text-3xl font-extrabold text-emerald-600">
-                  <AnimatedCounter end={500} suffix="+" />
+                  <AnimatedCounter end={stats.totalBooks} suffix="+" />
                 </div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
                   Digital E-Books

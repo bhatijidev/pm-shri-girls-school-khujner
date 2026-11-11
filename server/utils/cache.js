@@ -21,6 +21,10 @@ class SimpleMemoryCache {
     });
   }
 
+  delete(key) {
+    this.store.delete(key);
+  }
+
   clearPrefix(prefix) {
     for (const key of this.store.keys()) {
       if (key.startsWith(prefix)) {

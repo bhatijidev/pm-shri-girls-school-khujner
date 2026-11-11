@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { ExternalLink, Download, BookOpen, ShieldCheck, Eye, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { bookService } from '../../services/api';
 
 export default function BookCard({ book }) {
   const [imgError, setImgError] = useState(false);
+  const [readsCount, setReadsCount] = useState(book.view_count || 0);
   const targetUrl = book.pdf_file_url || book.external_url;
   const isDirectPdf = targetUrl && (targetUrl.toLowerCase().endsWith('.pdf') || targetUrl.includes('/pdf/'));
   const isExternal = book.link_type === 'external' && !isDirectPdf;
+
+  const handleReadClick = () => {
+    setReadsCount((prev) => prev + 1);
+    bookService.recordView(book.id);
+  };
 
   // Fallback category colors if image fails
   const categoryGradients = {
@@ -120,6 +127,7 @@ export default function BookCard({ book }) {
             href={targetUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={handleReadClick}
             className="w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 transition-all duration-200 bg-gradient-to-r from-brand-orange to-brand-red text-white hover:opacity-95 shadow-md shadow-orange-500/20"
           >
             {isDirectPdf ? (
@@ -157,7 +165,7 @@ export default function BookCard({ book }) {
           </span>
           <span className="flex items-center space-x-1">
             <Eye className="w-3 h-3" />
-            <span>{book.view_count || 1} reads</span>
+            <span>{readsCount} reads</span>
           </span>
         </div>
       </div>
