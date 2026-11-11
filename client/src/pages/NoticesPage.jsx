@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useNotices } from '../hooks/useNotices';
 import NoticeCard from '../components/notices/NoticeCard';
 import NoticeDetail from '../components/notices/NoticeDetail';
 import Loading from '../components/ui/Loading';
-import { Bell, Search, Filter, AlertCircle, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Bell, Search, Filter, AlertCircle, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 export default function NoticesPage() {
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialCategory = searchParams.get('category') || (searchParams.get('urgent') === 'true' ? 'urgent' : '');
+  const initialSearch = searchParams.get('search') || '';
+
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+  const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [activeNotice, setActiveNotice] = useState(null);
 
   const { notices, pagination, loading, error, params, setParams } = useNotices({
     page: 1,
     limit: 10,
-    category: '',
-    search: ''
+    category: initialCategory,
+    urgent: initialCategory === 'urgent' ? 'true' : '',
+    search: initialSearch
   });
 
   const categories = [
@@ -27,22 +33,92 @@ export default function NoticesPage() {
     { label: 'General Circulars', value: 'general' }
   ];
 
+  // Keep in sync if URL query parameter changes
+  useEffect(() => {
+    const urlCat = searchParams.get('category') || (searchParams.get('urgent') === 'true' ? 'urgent' : '');
+    const urlSearch = searchParams.get('search') || '';
+    if (urlCat !== selectedCategory || urlSearch !== searchTerm) {
+      setSelectedCategory(urlCat);
+      setSearchTerm(urlSearch);
+      setParams((prev) => ({
+        ...prev,
+        page: 1,
+        category: urlCat,
+        urgent: urlCat === 'urgent' ? 'true' : '',
+        search: urlSearch
+      }));
+    }
+  }, [searchParams]);
+
   const handleCategoryChange = (cat) => {
     setSelectedCategory(cat);
     setParams((prev) => ({
       ...prev,
       page: 1,
-      category: cat
+      category: cat,
+      urgent: cat === 'urgent' ? 'true' : ''
     }));
+
+    const nextParams = new URLSearchParams(searchParams);
+    if (cat) {
+      nextParams.set('category', cat);
+      if (cat === 'urgent') nextParams.set('urgent', 'true');
+      else nextParams.delete('urgent');
+    } else {
+      nextParams.delete('category');
+      nextParams.delete('urgent');
+    }
+    setSearchParams(nextParams, { replace: true });
   };
 
   const handleSearch = (e) => {
     e.preventDefault();
+    const trimmed = searchTerm.trim();
     setParams((prev) => ({
       ...prev,
       page: 1,
-      search: searchTerm
+      search: trimmed
     }));
+
+    const nextParams = new URLSearchParams(searchParams);
+    if (trimmed) {
+      nextParams.set('search', trimmed);
+    } else {
+      nextParams.delete('search');
+    }
+    setSearchParams(nextParams, { replace: true });
+  };
+
+  const handleSearchChange = (e) => {
+    const val = e.target.value;
+    setSearchTerm(val);
+    if (val === '' && params.search) {
+      setParams((prev) => ({ ...prev, page: 1, search: '' }));
+      const nextParams = new URLSearchParams(searchParams);
+      nextParams.delete('search');
+      setSearchParams(nextParams, { replace: true });
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    setParams((prev) => ({ ...prev, page: 1, search: '' }));
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.delete('search');
+    setSearchParams(nextParams, { replace: true });
+  };
+
+  const handleResetFilters = () => {
+    setSelectedCategory('');
+    setSearchTerm('');
+    setParams({
+      page: 1,
+      limit: 10,
+      category: '',
+      urgent: '',
+      search: ''
+    });
+    setSearchParams({}, { replace: true });
   };
 
   const handlePageChange = (newPage) => {
@@ -88,9 +164,19 @@ export default function NoticesPage() {
                 type="text"
                 placeholder="Search circulars by keyword, exam, date..."
                 value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-24 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
+                onChange={handleSearchChange}
+                className="w-full pl-10 pr-28 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-orange"
               />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={clearSearch}
+                  className="absolute right-20 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1"
+                  title="Clear search"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
               <button
                 type="submit"
                 className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-brand-orange text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brand-red transition-colors"
@@ -144,11 +230,7 @@ export default function NoticesPage() {
               No matching circulars were found for the selected category or search keyword.
             </p>
             <button
-              onClick={() => {
-                setSelectedCategory('');
-                setSearchTerm('');
-                setParams({ page: 1, limit: 10, category: '', search: '' });
-              }}
+              onClick={handleResetFilters}
               className="text-xs font-bold text-brand-orange hover:underline"
             >
               Reset Filters

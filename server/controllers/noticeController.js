@@ -22,18 +22,20 @@ export const getAllNotices = (req, res) => {
     let whereClause = 'WHERE n.is_active = 1';
     const params = [];
 
-    if (category) {
+    // Filter by specific category (if not 'urgent' or 'all')
+    if (category && category !== 'urgent' && category !== 'all') {
       whereClause += ' AND n.category = ?';
       params.push(category);
     }
 
-    if (urgent === 'true') {
-      whereClause += ' AND n.is_urgent = 1';
+    // Filter by urgent status (either category is 'urgent' or query param urgent is 'true'/'1')
+    if (category === 'urgent' || urgent === 'true' || urgent === '1') {
+      whereClause += " AND (n.is_urgent = 1 OR n.category = 'urgent')";
     }
 
-    if (search) {
+    if (search && search.trim()) {
       whereClause += ' AND (n.title LIKE ? OR n.title_hindi LIKE ? OR n.content LIKE ? OR n.content_hindi LIKE ?)';
-      const searchTerm = `%${search}%`;
+      const searchTerm = `%${search.trim()}%`;
       params.push(searchTerm, searchTerm, searchTerm, searchTerm);
     }
 
