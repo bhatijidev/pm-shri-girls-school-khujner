@@ -1,6 +1,8 @@
 import React from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import SocialSidebar from '../common/SocialSidebar';
+import ScrollButtons from '../common/ScrollButtons';
 import { useLatestNotices } from '../../hooks/useNotices';
 import { AlertCircle, ChevronRight, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -46,6 +48,12 @@ export default function Layout({ children }) {
 
       {/* Main Navigation */}
       <Navbar />
+
+      {/* Floating Side Social Media Bar (Left Middle) */}
+      <SocialSidebar />
+
+      {/* Floating Scroll Top / Down Buttons (Right Bottom) */}
+      <ScrollButtons />
 
       {/* Page Content with offset for fixed navbar */}
       <main className="flex-grow pt-20 sm:pt-24">
