@@ -106,6 +106,18 @@ if (fs.existsSync(ncertPath)) {
 // Filter out non-local regional state languages (keep Hindi, English, Sanskrit, Urdu, Science, Maths, Social Science, Commerce, Arts, Vocational)
 const regionalFilter = /(Assamese|Bengali|Bodo|Dogri|Gujarati|Kannada|Kashmiri|Konkani|Maithili|Malayalam|Manipuri|Marathi|Nepali|Odia|Oriya|Punjabi|Santhali|Sindhi|Tamil|Telugu)/i;
 
+// Verified list of deprecated 404 NCERT codes that return "ERROR" on NCERT servers (replaced by new NEP 2024 editions)
+const brokenCodes = new Set([
+  "chhn1", "ceap1", "chap1", "cuap1", "ceen1", "cemh1", "chmh1", "curi1", "culb1",
+  "demh1", "duri1", "dhhn1", "duap1", "deen1", "dulb1", "euma1", "eulb1",
+  "heih1", "huhi1", "huse1", "hugy1", "huss1", "huaz1", "huug1", "hudp1", "hujp1",
+  "iepb1", "ievc1", "ieva1", "ievs1", "ievt1", "ievw1", "ieve1", "ievh1", "iepg1", "ieeo1", "iees1",
+  "kepc1", "kevt1", "keoc1", "keda1", "kedf1", "kefc1", "kehc1", "kegd1", "khgd1", "kect1", "kect2", "khct1", "khct2",
+  "lehc1", "lhhc1", "legd1", "mehc1", "khhc1", "geof1",
+  "fhvs1", "fhbr1", "fehs1", "feps1", "fhsk1", "fess2", "fess3", "ghbm1",
+  "iemo1", "ihks1", "ihkr1", "iess1", "iess2", "iess3", "iess4"
+]);
+
 const bookList = [];
 
 // Track book codes to prevent duplicates
@@ -115,6 +127,7 @@ const seenCodes = new Set();
 for (const b of ncertRaw) {
   if (!b.classGrade || !b.title || !b.code) continue;
   if (regionalFilter.test(b.title)) continue;
+  if (brokenCodes.has(b.code)) continue;
   if (seenCodes.has(b.code)) continue;
   seenCodes.add(b.code);
 
@@ -226,90 +239,6 @@ const classicBooks = [
   },
 
   // Class 6 Classic
-  {
-    title: 'NCERT Class 6 - Vasant Part 1 (वसंत भाग 1)',
-    title_hindi: 'कक्षा 6 - वसंत भाग 1 (हिंदी)',
-    author: 'NCERT Hindi Faculty',
-    publisher: 'NCERT',
-    description: 'Famous Hindi literature prose, poems by legendary poets, comprehension, and vocabulary.',
-    category_slug: 'ncert',
-    class_grade: 'Class 6',
-    subject: 'Hindi',
-    external_url: 'https://ncert.nic.in/textbook.php?fhvs1=0-14',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/fhvs101.pdf'
-  },
-  {
-    title: 'NCERT Class 6 - Bal Ramkatha (बाल रामकथा)',
-    title_hindi: 'कक्षा 6 - बाल रामकथा (हिंदी पूरक पुस्तक)',
-    author: 'NCERT Hindi Wing',
-    publisher: 'NCERT',
-    description: 'Supplementary reader depicting the epic Ramayana tailored for moral and character development.',
-    category_slug: 'ncert',
-    class_grade: 'Class 6',
-    subject: 'Hindi Supplementary',
-    external_url: 'https://ncert.nic.in/textbook.php?fhbr1=0-12',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/fhbr101.pdf'
-  },
-  {
-    title: 'NCERT Class 6 - Honeysuckle (English Literature)',
-    title_hindi: 'कक्षा 6 - हनीसकल (अंग्रेजी)',
-    author: 'NCERT English Faculty',
-    publisher: 'NCERT',
-    description: 'Classic stories, poems, reading comprehension, and grammar building for middle school.',
-    category_slug: 'ncert',
-    class_grade: 'Class 6',
-    subject: 'English',
-    external_url: 'https://ncert.nic.in/textbook.php?fehs1=0-8',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/fehs101.pdf'
-  },
-  {
-    title: 'NCERT Class 6 - A Pact with the Sun',
-    title_hindi: 'कक्षा 6 - अ पैक्ट विद द सन (अंग्रेजी पूरक)',
-    author: 'NCERT English Faculty',
-    publisher: 'NCERT',
-    description: 'Supplementary reader with moral fables, inspiring life lessons, and comprehension activities.',
-    category_slug: 'ncert',
-    class_grade: 'Class 6',
-    subject: 'English Supplementary',
-    external_url: 'https://ncert.nic.in/textbook.php?feps1=0-7',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/feps101.pdf'
-  },
-  {
-    title: 'NCERT Class 6 - Ruchira Part 1 (रुचिरा प्रथम भाग)',
-    title_hindi: 'कक्षा 6 - रुचिरा प्रथम भाग (संस्कृत)',
-    author: 'NCERT Sanskrit Cell',
-    publisher: 'NCERT',
-    description: 'Foundational Sanskrit grammar, shlokas, shabd-roop, dhatu-roop, and introductory dialogues.',
-    category_slug: 'ncert',
-    class_grade: 'Class 6',
-    subject: 'Sanskrit',
-    external_url: 'https://ncert.nic.in/textbook.php?fhsk1=0-12',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/fhsk101.pdf'
-  },
-  {
-    title: 'NCERT Class 6 - The Earth Our Habitat (पृथ्वी: हमारा आवास)',
-    title_hindi: 'कक्षा 6 - पृथ्वी: हमारा आवास (भूगोल)',
-    author: 'NCERT Social Science Faculty',
-    publisher: 'NCERT',
-    description: 'Solar system, globe, latitudes, longitudes, motions of earth, maps, major domains, and our country India.',
-    category_slug: 'ncert',
-    class_grade: 'Class 6',
-    subject: 'Geography',
-    external_url: 'https://ncert.nic.in/textbook.php?fess2=0-6',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/fess201.pdf'
-  },
-  {
-    title: 'NCERT Class 6 - Social and Political Life - I',
-    title_hindi: 'कक्षा 6 - सामाजिक एवं राजनीतिक जीवन - 1',
-    author: 'NCERT Social Science Faculty',
-    publisher: 'NCERT',
-    description: 'Diversity, prejudice, government functioning, Panchayati Raj, rural and urban administration.',
-    category_slug: 'ncert',
-    class_grade: 'Class 6',
-    subject: 'Civics',
-    external_url: 'https://ncert.nic.in/textbook.php?fess3=0-8',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/fess301.pdf'
-  },
 
   // Class 7 Classic
   {
@@ -323,18 +252,6 @@ const classicBooks = [
     subject: 'Hindi',
     external_url: 'https://ncert.nic.in/textbook.php?ghvs1=0-15',
     pdf_file_url: 'https://ncert.nic.in/textbook/pdf/ghvs101.pdf'
-  },
-  {
-    title: 'NCERT Class 7 - Bal Mahabharat Katha (बाल महाभारत कथा)',
-    title_hindi: 'कक्षा 7 - बाल महाभारत कथा (हिंदी पूरक)',
-    author: 'NCERT Hindi Wing',
-    publisher: 'NCERT',
-    description: 'Simplified Hindi adaptation of the Mahabharata focusing on dharma, righteousness, and Indian heritage.',
-    category_slug: 'ncert',
-    class_grade: 'Class 7',
-    subject: 'Hindi Supplementary',
-    external_url: 'https://ncert.nic.in/textbook.php?ghbm1=0-40',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/ghbm101.pdf'
   },
   {
     title: 'NCERT Class 7 - Honeycomb (English)',
@@ -397,90 +314,6 @@ const classicBooks = [
     subject: 'English',
     external_url: 'https://ncert.nic.in/textbook.php?iebe1=0-9',
     pdf_file_url: 'https://ncert.nic.in/textbook/pdf/iebe101.pdf'
-  },
-  {
-    title: 'NCERT Class 9 - Moments (Supplementary Reader)',
-    title_hindi: 'कक्षा 9 - मोमेंट्स (अंग्रेजी पूरक पुस्तक)',
-    author: 'NCERT English Faculty',
-    publisher: 'NCERT',
-    description: 'Engaging stories by Mulk Raj Anand, Ruskin Bond, and Oscar Wilde for deep literary appreciation.',
-    category_slug: 'ncert',
-    class_grade: 'Class 9',
-    subject: 'English Supplementary',
-    external_url: 'https://ncert.nic.in/textbook.php?iemo1=0-9',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/iemo101.pdf'
-  },
-  {
-    title: 'NCERT Class 9 - Kshitij Part 1 (क्षितिज भाग 1)',
-    title_hindi: 'कक्षा 9 - क्षितिज भाग 1 (हिंदी कोर्स A)',
-    author: 'NCERT Hindi Faculty',
-    publisher: 'NCERT',
-    description: 'Premchand, Kabir, Lal Ghad, Makhanlal Chaturvedi, and other celebrated masters of Hindi literature.',
-    category_slug: 'ncert',
-    class_grade: 'Class 9',
-    subject: 'Hindi',
-    external_url: 'https://ncert.nic.in/textbook.php?ihks1=0-14',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/ihks101.pdf'
-  },
-  {
-    title: 'NCERT Class 9 - Kritika Part 1 (कृतिका भाग 1)',
-    title_hindi: 'कक्षा 9 - कृतिका भाग 1 (हिंदी पूरक)',
-    author: 'NCERT Hindi Faculty',
-    publisher: 'NCERT',
-    description: 'Supplementary Hindi reader featuring heartwarming narratives of rural India and societal themes.',
-    category_slug: 'ncert',
-    class_grade: 'Class 9',
-    subject: 'Hindi Supplementary',
-    external_url: 'https://ncert.nic.in/textbook.php?ihkr1=0-5',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/ihkr101.pdf'
-  },
-  {
-    title: 'NCERT Class 9 - India and Contemporary World - I',
-    title_hindi: 'कक्षा 9 - भारत और समकालीन विश्व भाग 1 (इतिहास)',
-    author: 'NCERT History Faculty',
-    publisher: 'NCERT',
-    description: 'The French Revolution, Socialism in Europe, Russian Revolution, Nazism and the Rise of Hitler.',
-    category_slug: 'ncert',
-    class_grade: 'Class 9',
-    subject: 'History',
-    external_url: 'https://ncert.nic.in/textbook.php?iess1=0-5',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/iess101.pdf'
-  },
-  {
-    title: 'NCERT Class 9 - Contemporary India - I (समकालीन भारत)',
-    title_hindi: 'कक्षा 9 - समकालीन भारत भाग 1 (भूगोल)',
-    author: 'NCERT Geography Faculty',
-    publisher: 'NCERT',
-    description: 'India size and location, physical features of India, drainage systems, climate, natural vegetation and wildlife.',
-    category_slug: 'ncert',
-    class_grade: 'Class 9',
-    subject: 'Geography',
-    external_url: 'https://ncert.nic.in/textbook.php?iess2=0-5',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/iess201.pdf'
-  },
-  {
-    title: 'NCERT Class 9 - Democratic Politics - I (लोकतांत्रिक राजनीति)',
-    title_hindi: 'कक्षा 9 - लोकतांत्रिक राजनीति भाग 1 (नागरिक शास्त्र)',
-    author: 'NCERT Political Science Faculty',
-    publisher: 'NCERT',
-    description: 'What is democracy, constitutional design, electoral politics, working of institutions, and democratic rights.',
-    category_slug: 'ncert',
-    class_grade: 'Class 9',
-    subject: 'Civics',
-    external_url: 'https://ncert.nic.in/textbook.php?iess3=0-5',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/iess301.pdf'
-  },
-  {
-    title: 'NCERT Class 9 - Economics (अर्थशास्त्र)',
-    title_hindi: 'कक्षा 9 - अर्थशास्त्र (सामाजिक विज्ञान)',
-    author: 'NCERT Economics Department',
-    publisher: 'NCERT',
-    description: 'Story of village Palampur, people as resource, poverty as a challenge, and food security in India.',
-    category_slug: 'ncert',
-    class_grade: 'Class 9',
-    subject: 'Economics',
-    external_url: 'https://ncert.nic.in/textbook.php?iess4=0-4',
-    pdf_file_url: 'https://ncert.nic.in/textbook/pdf/iess401.pdf'
   },
   {
     title: 'NCERT Class 9 - Mathematics (गणित)',
@@ -619,7 +452,7 @@ const portals = [
     class_grade: 'Class 1-12',
     subject: 'All Subjects (MP Board)',
     cover_image_url: '/images/books/cat-mpboard.jpg',
-    external_url: 'http://mptbc.nic.in',
+    external_url: 'https://vimarsh.mp.gov.in',
     pdf_file_url: 'http://mptbc.nic.in'
   },
   {
