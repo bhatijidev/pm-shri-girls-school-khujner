@@ -4,6 +4,9 @@ on:
   schedule:
     # Run every 10 minutes to prevent Render free instance from spinning down (15 min inactivity timeout)
     - cron: '*/10 * * * *'
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
