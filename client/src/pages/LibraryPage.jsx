@@ -216,6 +216,28 @@ export default function LibraryPage() {
           </div>
         )}
 
+        {/* Legal & Copyright Transparency Banner */}
+        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-emerald-100 shadow-sm space-y-4">
+          <div className="flex items-start space-x-3.5">
+            <div className="p-2.5 rounded-2xl bg-emerald-50 text-emerald-700 flex-shrink-0">
+              <ShieldCheck className="w-6 h-6" />
+            </div>
+            <div className="space-y-1.5 text-xs text-slate-600 leading-relaxed">
+              <h4 className="font-heading font-bold text-sm text-slate-900">
+                100% Legal & Free Educational Access Disclaimer (कॉपीराइट एवं कानूनी सुरक्षा)
+              </h4>
+              <p>
+                <strong>भारतीय कॉपीराइट अधिनियम, 1957 (धारा 52 - Fair Dealing in Education)</strong> एवं भारत सरकार के डिजिटल शिक्षण दिशा-निर्देशों के तहत, यह पोर्टल केवल छात्राओं और शिक्षकों की निःशुल्क शैक्षणिक सुविधा के लिए एक आधिकारिक डायरेक्ट इंडेक्स/कैटलॉग के रूप में कार्य करता है।
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-slate-500 pt-1">
+                <li><strong>No Hosting / No Piracy:</strong> कोई भी कॉपीराइटेड सामग्री हमारे सर्वर पर स्टोर नहीं है। सभी पुस्तकें NCERT (ncert.nic.in), मध्य प्रदेश विमर्श पोर्टल (vimarsh.mp.gov.in) एवं Archive.org के मूल सरकारी व पब्लिक डोमेन सर्वर्स से सीधे नए टैब में खोली जाती हैं।</li>
+                <li><strong>Public Domain Heritage:</strong> हिन्दू धर्म ग्रंथ (भगवद्गीता, रामायण, उपनिषद) पब्लिक डोमेन एवं गीताप्रेस गोरखपुर के निःशुल्क अध्ययन भंडार से संदर्भित हैं।</li>
+                <li><strong>PM SHRI Exemplar Mandate:</strong> यह विद्यालय भारत सरकार एवं मध्य प्रदेश स्कूल शिक्षा विभाग द्वारा संचालित एक शासकीय आदर्श संस्थान है, जिसका उद्देश्य बालिकाओं को डिजिटल शिक्षा व पठन सामग्री सुलभ कराना है।</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );
