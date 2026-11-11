@@ -62,23 +62,23 @@ console.log('✅ Categories verified.');
 db.prepare('DELETE FROM books').run();
 console.log('🧹 Refreshed books catalog for full comprehensive seeding...');
 
-// Verified high-resolution book cover image URLs
+// Verified high-resolution book cover image URLs - Authentic real textbooks and sacred texts
 const IMG = {
-  math: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&q=80',
-  science: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&q=80',
-  biology: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?w=600&q=80',
-  physics: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80',
-  history: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=600&q=80',
-  geography: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&q=80',
-  civics: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=600&q=80',
-  literature: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=600&q=80',
-  hindi: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=600&q=80',
-  gita: 'https://images.unsplash.com/photo-1618365908648-e71bd5716cba?w=600&q=80',
-  competitive: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80',
-  primary: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80',
-  coding: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80',
-  commerce: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80',
-  sports: 'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=600&q=80'
+  math: '/images/books/ncert-math-c10.jpg',
+  science: '/images/books/ncert-science-c9.jpg',
+  biology: '/images/books/ncert-biology-c11.jpg',
+  physics: '/images/books/ncert-physics-c12.jpg',
+  history: '/images/books/ncert-bharat-vishwa.jpg',
+  geography: '/images/books/cat-mpboard.jpg',
+  civics: '/images/books/ncert-loktantra.jpg',
+  literature: '/images/books/ncert-flamingo.jpg',
+  hindi: '/images/books/ncert-rimjhim.jpg',
+  gita: '/images/books/bhagavad-gita-real.jpg',
+  competitive: '/images/books/cat-competitive.jpg',
+  primary: '/images/books/ncert-rimjhim.jpg',
+  coding: '/images/books/cat-cbse.jpg',
+  commerce: '/images/books/cat-ncert.jpg',
+  sports: '/images/books/cat-career.jpg'
 };
 
 const allBooks = [
@@ -668,7 +668,7 @@ const allBooks = [
     category_slug: 'hindu-dharm',
     class_grade: 'All Ages',
     subject: 'Spiritual Philosophy',
-    cover_image_url: IMG.gita,
+    cover_image_url: '/images/books/bhagavad-gita-real.jpg',
     link_type: 'external',
     external_url: 'https://archive.org/details/GitaInHindi'
   },
@@ -681,7 +681,7 @@ const allBooks = [
     category_slug: 'hindu-dharm',
     class_grade: 'All Ages',
     subject: 'Sacred Epic & Ethics',
-    cover_image_url: IMG.gita,
+    cover_image_url: '/images/books/valmiki-ramayana.jpg',
     link_type: 'external',
     external_url: 'https://archive.org/details/shri-ramcharitmanas-gita-press-hindi-topic-wise-pdf-bookmarks'
   },
@@ -694,7 +694,7 @@ const allBooks = [
     category_slug: 'hindu-dharm',
     class_grade: 'All Ages',
     subject: 'Sanskrit & Ancient Ethics',
-    cover_image_url: IMG.gita,
+    cover_image_url: '/images/books/valmiki-ramayana.jpg',
     link_type: 'external',
     external_url: 'https://archive.org/details/valmiki-ramayan-part-1-gita-press'
   },
@@ -707,7 +707,7 @@ const allBooks = [
     category_slug: 'hindu-dharm',
     class_grade: 'All Ages',
     subject: 'Indian History & Dharma',
-    cover_image_url: IMG.gita,
+    cover_image_url: '/images/books/gita-press-large.jpg',
     link_type: 'external',
     external_url: 'https://archive.org/details/valmiki-ramayana_202404'
   },
@@ -720,7 +720,7 @@ const allBooks = [
     category_slug: 'hindu-dharm',
     class_grade: 'Higher Secondary',
     subject: 'Vedanta & Philosophy',
-    cover_image_url: IMG.gita,
+    cover_image_url: '/images/books/upanishad.jpg',
     link_type: 'external',
     external_url: 'https://archive.org/details/gita-shankarbhasya-hindi-gitapress'
   },
@@ -733,7 +733,7 @@ const allBooks = [
     category_slug: 'hindu-dharm',
     class_grade: 'All Ages',
     subject: 'Devotion & Mind Power',
-    cover_image_url: IMG.gita,
+    cover_image_url: '/images/books/hanuman-chalisa-art.jpg',
     link_type: 'external',
     external_url: 'https://archive.org/details/GitaInHindi'
   },

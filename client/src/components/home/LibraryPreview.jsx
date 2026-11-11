@@ -9,7 +9,7 @@ export default function LibraryPreview() {
       name: 'NCERT Textbooks',
       nameHindi: 'एनसीईआरटी पुस्तकें',
       desc: 'Class 1 to 12 free official textbooks for Math, Science, Physics, Chemistry, Biology & Humanities.',
-      image: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=600&q=80',
+      image: '/images/books/cat-ncert.jpg',
       badge: 'Official NCERT',
       color: 'bg-blue-600',
       tag: 'Classes 1-12'
@@ -18,7 +18,7 @@ export default function LibraryPreview() {
       name: 'MP Board Curriculum',
       nameHindi: 'एमपी बोर्ड पाठ्यक्रम',
       desc: 'Direct integration with Vimarsh & MP Text Book Corporation for blueprint, model papers & question banks.',
-      image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=600&q=80',
+      image: '/images/books/cat-mpboard.jpg',
       badge: 'Vimarsh Portal',
       color: 'bg-emerald-600',
       tag: 'MPBSE Bhopal'
@@ -27,7 +27,7 @@ export default function LibraryPreview() {
       name: 'CBSE & Skill Books',
       nameHindi: 'सीबीएसई कौशल शिक्षा',
       desc: 'AI, Information Technology, Financial Markets & Vocational Handbooks from CBSE.',
-      image: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80',
+      image: '/images/books/cat-cbse.jpg',
       badge: 'Skill Education',
       color: 'bg-rose-600',
       tag: 'Vocational'
@@ -36,7 +36,7 @@ export default function LibraryPreview() {
       name: 'Hindu Dharm Sacred Granth',
       nameHindi: 'हिन्दू धर्म ग्रंथ (गीताप्रेस)',
       desc: 'Public domain Bhagavad Gita, Valmiki Ramayana, and Shri Ramcharitmanas.',
-      image: 'https://images.unsplash.com/photo-1618365908648-e71bd5716cba?w=600&q=80',
+      image: '/images/books/cat-hindudharm.jpg',
       badge: 'Public Domain',
       color: 'bg-amber-600',
       tag: 'Sacred Heritage'
@@ -45,7 +45,7 @@ export default function LibraryPreview() {
       name: 'Competitive Exam Hub',
       nameHindi: 'प्रतियोगी परीक्षा तैयारी',
       desc: 'Free access to National Digital Library of India (NDLI), IGNOU eGyanKosh, NIOS & SWAYAM.',
-      image: 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600&q=80',
+      image: '/images/books/cat-competitive.jpg',
       badge: 'Govt. Portals',
       color: 'bg-purple-600',
       tag: 'UPSC / NEET'
@@ -54,7 +54,7 @@ export default function LibraryPreview() {
       name: 'School Guides & Career',
       nameHindi: 'कन्या करियर मार्गदर्शन',
       desc: 'Internal handbooks on Ladli Laxmi scholarship, defense academies, and NEP 2020 modules.',
-      image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80',
+      image: '/images/books/cat-career.jpg',
       badge: 'Khujner HSS',
       color: 'bg-teal-600',
       tag: 'Girl Child'
