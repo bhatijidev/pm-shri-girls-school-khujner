@@ -74,7 +74,7 @@ export default function Contact() {
                         href="tel:9575962662"
                         className="block text-xs sm:text-sm text-slate-700 font-semibold hover:text-brand-orange transition-colors"
                       >
-                        📞 Principal: +91 95759 62662
+                        📞 Principal (श्री हितेश सोनी): +91 95759 62662
                       </a>
                       <a
                         href="tel:9575053750"

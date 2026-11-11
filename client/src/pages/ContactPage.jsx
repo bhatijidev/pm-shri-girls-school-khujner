@@ -125,7 +125,7 @@ export default function ContactPage() {
                 <PhoneCall className="w-6 h-6" />
               </div>
               <h3 className="font-heading font-bold text-slate-900 text-lg">Principal's Office</h3>
-              <p className="text-xs text-slate-500 mt-0.5">प्राचार्य कक्ष — प्रशासनिक प्रमुख</p>
+              <p className="text-xs text-slate-500 mt-0.5">प्राचार्य कक्ष — श्री हितेश सोनी (प्राचार्य)</p>
               <div className="mt-4 space-y-1">
                 <a
                   href="tel:9575962662"

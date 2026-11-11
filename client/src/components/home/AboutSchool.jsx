@@ -128,17 +128,17 @@ export default function AboutSchool() {
 
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
                 <div className="text-3xl font-extrabold text-blue-600">
-                  <AnimatedCounter end={26} suffix="+" />
+                  <AnimatedCounter end={30} suffix="" />
                 </div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
                   Faculty Members
                 </p>
-                <p className="text-[10px] text-slate-400 font-hindi">समर्पित शिक्षक</p>
+                <p className="text-[10px] text-slate-400 font-hindi">समर्पित शिक्षक एवं स्टाफ</p>
               </div>
 
               <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
                 <div className="text-3xl font-extrabold text-emerald-600">
-                  <AnimatedCounter end={55} suffix="+" />
+                  <AnimatedCounter end={500} suffix="+" />
                 </div>
                 <p className="text-xs font-semibold uppercase text-slate-500">
                   Digital E-Books
