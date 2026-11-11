@@ -99,4 +99,15 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_notices_urgent ON notices(is_urgent, is_active);
 `);
 
+// Clean up any legacy artificial seed view counts (> 5000 views) so views are 100% real and dynamic
+try {
+  const check = db.prepare('SELECT SUM(view_count) as views FROM books').get();
+  if (check && check.views > 5000) {
+    db.exec('UPDATE books SET view_count = 0;');
+    db.exec('PRAGMA wal_checkpoint(TRUNCATE);');
+  }
+} catch {
+  // Ignore if table empty
+}
+
 export default db;

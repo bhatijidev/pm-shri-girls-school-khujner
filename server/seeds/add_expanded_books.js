@@ -516,7 +516,7 @@ export function insertBooks() {
         console.warn('Unknown category slug:', b.category_slug);
         continue;
       }
-      const views = Math.floor(Math.random() * 80) + 40;
+      const views = 0; // Real dynamic views starting from 0
       const isDirectPdf = b.pdf_file_url && (b.pdf_file_url.toLowerCase().endsWith('.pdf') || b.pdf_file_url.includes('/pdf/'));
       const linkType = isDirectPdf ? 'pdf' : 'external';
       insertStmt.run(

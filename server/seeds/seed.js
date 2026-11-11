@@ -595,7 +595,7 @@ try {
   for (const b of bookList) {
     const catId = categoryMap[b.category_slug];
     if (!catId) continue;
-    const views = Math.floor(Math.random() * 85) + 30;
+    const views = 0; // Real dynamic views starting from 0
     insertBook.run(
       b.title,
       b.title_hindi,
