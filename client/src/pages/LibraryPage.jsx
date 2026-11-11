@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SEO from '../components/common/SEO';
 import { useBooks } from '../hooks/useBooks';
 import BookCard from '../components/library/BookCard';
 import CategoryFilter from '../components/library/CategoryFilter';
@@ -73,6 +74,12 @@ export default function LibraryPage() {
 
   return (
     <div className="py-12 bg-brand-cream min-h-screen">
+      <SEO
+        title="Digital E-Library (500+ Books & Textbooks)"
+        description="Free online digital library of PM SHRI Girls HSS Khujner with 500+ official NCERT books for Class 1 to 12, MP Board textbooks, Vedic & Hindu literature, and competitive exam guides."
+        keywords="NCERT books download, Class 1 to 12 NCERT PDF, MP Board ebooks, PM SHRI Khujner library, digital library Rajgarh"
+        canonicalPath="/library"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Page Hero Banner */}

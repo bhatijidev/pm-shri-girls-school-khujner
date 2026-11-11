@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SEO from '../components/common/SEO';
 import { 
   MapPin, 
   Phone, 
@@ -70,6 +71,12 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 pt-24 pb-20">
+      <SEO
+        title="Contact Us & Campus Location"
+        description="Official contact desk of PM SHRI Govt Girls HSS Khujner, Opposite Ganesh Mandir, Khujner, District Rajgarh (M.P.). Helpline: +91 95759 62662, Email: gghsskhujner@gmail.com."
+        keywords="PM SHRI Khujner contact, Khujner school phone number, Govt girls school Khujner address, Rajgarh school helpline"
+        canonicalPath="/contact"
+      />
       
       {/* 1. Hero Header Banner */}
       <section className="relative bg-gradient-to-br from-brand-dark via-slate-900 to-brand-purple text-white py-16 sm:py-20 overflow-hidden">

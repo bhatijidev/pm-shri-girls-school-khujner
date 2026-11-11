@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import SEO from '../components/common/SEO';
 import { useNotices } from '../hooks/useNotices';
 import NoticeCard from '../components/notices/NoticeCard';
 import NoticeDetail from '../components/notices/NoticeDetail';
@@ -133,6 +134,12 @@ export default function NoticesPage() {
 
   return (
     <div className="py-12 bg-brand-cream min-h-screen">
+      <SEO
+        title="Official School Notices & Circulars"
+        description="Stay updated with latest examinations, admission updates, holiday circulars, scholarships, and academic announcements from PM SHRI Govt Girls HSS Khujner."
+        keywords="PM SHRI Khujner notices, school circulars Khujner, MP Board exams notice, holiday announcements Rajgarh"
+        canonicalPath="/notices"
+      />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
         
         {/* Page Banner Header */}

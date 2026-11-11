@@ -98,7 +98,7 @@ app.use(helmet({
   },
   crossOriginEmbedderPolicy: false,
   crossOriginResourcePolicy: { policy: 'cross-origin' },
-  dnsPrefetchControl: { allow: false },
+  dnsPrefetchControl: { allow: true },
   frameguard: { action: 'sameorigin' },
   hidePoweredBy: true,
   hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
@@ -155,18 +155,39 @@ app.get('/api/health', (req, res) => {
 
 // Serve frontend static assets from client/dist in production
 const clientDistPath = path.join(__dirname, '..', 'client', 'dist');
+
+// SEO: Explicit handlers for robots.txt & sitemap.xml with proper MIME types
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain');
+  res.sendFile(path.join(clientDistPath, 'robots.txt'));
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml');
+  res.sendFile(path.join(clientDistPath, 'sitemap.xml'));
+});
+
+// High Performance Caching:
+// 1. Immutable 1-year cache for fingerprinted Vite bundles in /assets (0ms repeat load)
+app.use('/assets', express.static(path.join(clientDistPath, 'assets'), {
+  maxAge: '1y',
+  immutable: true
+}));
+
+// 2. General static assets (favicons, images, etc.)
 app.use(express.static(clientDistPath, {
   dotfiles: 'ignore',
   index: 'index.html',
   maxAge: '1d'
 }));
 
-// React Router SPA Catch-all: send index.html for any client navigation route
+// React Router SPA Catch-all: send index.html with no-cache so app updates instantly
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
     return next();
   }
   const indexPath = path.join(clientDistPath, 'index.html');
+  res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
   res.sendFile(indexPath, (err) => {
     if (err) next();
   });
