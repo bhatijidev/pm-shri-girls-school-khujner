@@ -12,7 +12,7 @@ export default function LibraryPage() {
 
   const { books, categories, pagination, loading, error, params, setParams } = useBooks({
     page: 1,
-    limit: 16,
+    limit: 24,
     category: '',
     class: '',
     search: ''

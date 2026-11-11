@@ -22,6 +22,7 @@ export const getAllBooks = (req, res) => {
 
     let whereClause = 'WHERE b.is_active = 1';
     const params = [];
+    let orderClause = 'ORDER BY b.created_at DESC, b.id ASC';
 
     if (categoryId) {
       whereClause += ' AND b.category_id = ?';
@@ -30,10 +31,29 @@ export const getAllBooks = (req, res) => {
 
     if (classGrade) {
       if (classGrade === 'All Ages') {
-        whereClause += ' AND (b.class_grade = \'All Ages\' OR b.class_grade LIKE \'%Competitive%\' OR b.class_grade LIKE \'%All%\')';
+        whereClause += " AND (b.class_grade = 'All Ages' OR b.class_grade LIKE '%Competitive%' OR b.class_grade LIKE '%All%')";
       } else {
-        whereClause += ' AND (b.class_grade = ? OR b.class_grade = \'Class 1-12\' OR b.class_grade = \'Class 6-12\' OR b.class_grade = \'Class 9-12\' OR b.class_grade LIKE ?)';
-        params.push(classGrade, `${classGrade}-%`);
+        const classMatch = classGrade.match(/^Class\s+(\d+)$/i);
+        if (classMatch) {
+          const gNum = parseInt(classMatch[1], 10);
+          const allowedGrades = [classGrade];
+          if (gNum >= 1 && gNum <= 12) allowedGrades.push('Class 1-12');
+          if (gNum >= 6 && gNum <= 12) allowedGrades.push('Class 6-12');
+          if (gNum >= 9 && gNum <= 12) allowedGrades.push('Class 9-12');
+          if (gNum >= 10 && gNum <= 12) allowedGrades.push('Class 10-12');
+          if (gNum >= 11 && gNum <= 12) allowedGrades.push('Class 11-12');
+
+          const placeholders = allowedGrades.map(() => '?').join(', ');
+          whereClause += ` AND (b.class_grade IN (${placeholders}) OR b.class_grade LIKE ?)`;
+          params.push(...allowedGrades, `${classGrade}-%`);
+
+          // Put exact class textbooks at top, general multi-grade references at bottom
+          const safeGrade = classGrade.replace(/'/g, "''");
+          orderClause = `ORDER BY CASE WHEN b.class_grade = '${safeGrade}' THEN 0 ELSE 1 END, b.id ASC`;
+        } else {
+          whereClause += ' AND b.class_grade = ?';
+          params.push(classGrade);
+        }
       }
     }
 
@@ -58,7 +78,7 @@ export const getAllBooks = (req, res) => {
       FROM books b
       LEFT JOIN categories c ON b.category_id = c.id
       ${whereClause}
-      ORDER BY b.created_at DESC
+      ${orderClause}
       LIMIT ? OFFSET ?
     `;
     const books = db.prepare(dataQuery).all(...params, limit, offset);
