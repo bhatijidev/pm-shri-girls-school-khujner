@@ -7,11 +7,11 @@ export default function HeroSlider() {
   const slides = [
     {
       id: 1,
-      image: '/images/events/cycle-distribution.jpg',
+      image: '/images/school-building.jpg',
       badge: 'National PM SHRI Exemplar Institution',
       titleHindi: 'प्रधानमंत्री श्री शासकीय कन्या उच्चतर माध्यमिक विद्यालय, खुजनेर',
-      titleEnglish: 'PM SHRI Girls HSS, Khujner (M.P.)',
-      subtitle: 'Rajgarh District • UDISE: 23300137920 • निःशुल्क साइकिल वितरण, स्मार्ट क्लासरूम एवं समग्र शिक्षा योजना अंतर्गत बालिकाओं का सर्वांगीण विकास।',
+      titleEnglish: 'P.M. SHRI Govt. Girls Higher Secondary School, Khujner',
+      subtitle: 'Rajgarh District (M.P.) • UDISE: 23300137920 • मुख्य विद्यालय परिसर, आधुनिक शिक्षण संकुल, स्मार्ट क्लासरूम एवं समग्र शिक्षा अंतर्गत बालिकाओं का सर्वांगीण विकास।',
       primaryBtnText: 'Explore Digital Library',
       primaryBtnLink: '/library',
       secondaryBtnText: 'View School Notices',

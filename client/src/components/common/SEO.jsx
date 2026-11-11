@@ -3,11 +3,13 @@ import { useEffect } from 'react';
 const SITE_URL = 'https://pm-shri-girls-school-khujner.onrender.com';
 const DEFAULT_TITLE = 'PM SHRI Govt. Girls HSS, Khujner | मध्य प्रदेश';
 const DEFAULT_DESCRIPTION = 'Official Portal of PM SHRI Government Girls Higher Secondary School, Khujner (M.P.). Digital E-Library, Faculty, Announcements & Admissions.';
+const DEFAULT_IMAGE = `${SITE_URL}/images/school-building.jpg`;
 
 export default function SEO({
   title,
   description,
   keywords,
+  image,
   canonicalPath = ''
 }) {
   useEffect(() => {
@@ -49,10 +51,15 @@ export default function SEO({
     linkCanonical.setAttribute('href', canonicalUrl);
 
     // 5. Open Graph Meta Tags
+    const ogImageContent = image 
+      ? (image.startsWith('http') ? image : `${SITE_URL}${image.startsWith('/') ? image : `/${image}`}`)
+      : DEFAULT_IMAGE;
+
     const ogTags = [
       { property: 'og:title', content: fullTitle },
       { property: 'og:description', content: metaDescContent },
-      { property: 'og:url', content: canonicalUrl }
+      { property: 'og:url', content: canonicalUrl },
+      { property: 'og:image', content: ogImageContent }
     ];
 
     ogTags.forEach(({ property, content }) => {
@@ -64,7 +71,12 @@ export default function SEO({
       }
       ogEl.setAttribute('content', content);
     });
-  }, [title, description, keywords, canonicalPath]);
+
+    let twitterImg = document.querySelector('meta[name="twitter:image"]');
+    if (twitterImg) {
+      twitterImg.setAttribute('content', ogImageContent);
+    }
+  }, [title, description, keywords, image, canonicalPath]);
 
   return null;
 }

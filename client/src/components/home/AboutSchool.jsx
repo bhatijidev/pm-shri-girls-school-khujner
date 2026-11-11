@@ -99,24 +99,24 @@ export default function AboutSchool() {
           {/* Right Visual Photo Showcase with Interactive Overlays */}
           <div className="lg:col-span-5 space-y-6">
             
-            {/* Main Featured Photo */}
+            {/* Main Featured Photo - Official School Campus Building */}
             <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 group">
               <img
-                src="/images/events/farewell-ceremony.jpg"
-                alt="Students ceremony at PM SHRI Girls HSS Khujner"
+                src="/images/school-building.jpg"
+                alt="Main Campus Building of PM SHRI Govt Girls HSS Khujner"
                 className="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
               
               <div className="absolute bottom-4 left-4 right-4 text-white">
-                <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-orange px-2 py-0.5 rounded-md">
-                  Official School Event • PM SHRI Khujner
+                <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-orange px-2 py-0.5 rounded-md shadow-sm">
+                  Official Campus Building • मुख्य विद्यालय भवन
                 </span>
                 <h4 className="font-heading font-bold text-base mt-1">
-                  बालिका प्रतिभा सम्मान एवं दीक्षांत समारोह
+                  पीएम श्री शासकीय कन्या उ.मा. विद्यालय, खुजनेर
                 </h4>
                 <p className="text-xs text-orange-200">
-                  Annual Class 12 Academic Felicitation & Farewell Ceremony
+                  Modern Academic Complex & Courtyard • UDISE: 23300137920
                 </p>
               </div>
             </div>

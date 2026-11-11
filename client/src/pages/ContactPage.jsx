@@ -373,44 +373,63 @@ export default function ContactPage() {
           <div className="lg:col-span-5 space-y-6">
             
             {/* Campus Physical Address Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-sm border border-slate-200/80 space-y-4">
-              <div className="flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider">
-                <MapPin className="w-4 h-4" />
-                <span>Geographical Address</span>
-              </div>
-              <h3 className="text-lg font-heading font-bold text-slate-900">
-                School Campus Location
-              </h3>
-              
-              <div className="text-sm text-slate-700 space-y-2 leading-relaxed bg-orange-50/50 p-4 rounded-2xl border border-orange-100">
-                <p className="font-bold text-slate-900">
-                  PM SHRI Government Girls Higher Secondary School
-                </p>
-                <p className="font-hindi text-slate-600">
-                  शासकीय कन्या उच्चतर माध्यमिक विद्यालय, खुजनेर
-                </p>
-                <p className="text-slate-600">
-                  <strong>Landmark:</strong> Opposite Ganesh Mandir (गणेश मंदिर के सामने)
-                </p>
-                <p className="text-slate-600">
-                  <strong>Tehsil:</strong> Khujner, <strong>District:</strong> Rajgarh
-                </p>
-                <p className="text-slate-600">
-                  <strong>State:</strong> Madhya Pradesh — <strong>PIN:</strong> 465687
-                </p>
+            <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-slate-200/80">
+              <div className="relative h-48 w-full overflow-hidden bg-slate-900 group">
+                <img
+                  src="/images/school-building.jpg"
+                  alt="Official PM SHRI Govt Girls HSS Khujner Building"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-3 left-4 right-4 text-white">
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-orange px-2 py-0.5 rounded-md shadow-sm">
+                    Official Campus View
+                  </span>
+                  <p className="text-xs font-semibold text-white/95 mt-1">
+                    Opposite Ganesh Mandir, Khujner (M.P.)
+                  </p>
+                </div>
               </div>
 
-              <div className="pt-2">
-                <a
-                  href="https://maps.google.com/?q=Ganesh+Mandir+Khujner+Rajgarh+Madhya+Pradesh"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center space-x-2 w-full py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 hover:text-brand-orange hover:border-brand-orange font-bold text-xs transition-colors"
-                >
-                  <Compass className="w-4 h-4" />
-                  <span>Get Directions on Google Maps</span>
-                  <ExternalLink className="w-3.5 h-3.5 ml-1 text-slate-400" />
-                </a>
+              <div className="p-6 sm:p-8 space-y-4">
+                <div className="flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider">
+                  <MapPin className="w-4 h-4" />
+                  <span>Geographical Address</span>
+                </div>
+                <h3 className="text-lg font-heading font-bold text-slate-900">
+                  School Campus Location
+                </h3>
+                
+                <div className="text-sm text-slate-700 space-y-2 leading-relaxed bg-orange-50/50 p-4 rounded-2xl border border-orange-100">
+                  <p className="font-bold text-slate-900">
+                    PM SHRI Government Girls Higher Secondary School
+                  </p>
+                  <p className="font-hindi text-slate-600">
+                    शासकीय कन्या उच्चतर माध्यमिक विद्यालय, खुजनेर
+                  </p>
+                  <p className="text-slate-600">
+                    <strong>Landmark:</strong> Opposite Ganesh Mandir (गणेश मंदिर के सामने)
+                  </p>
+                  <p className="text-slate-600">
+                    <strong>Tehsil:</strong> Khujner, <strong>District:</strong> Rajgarh
+                  </p>
+                  <p className="text-slate-600">
+                    <strong>State:</strong> Madhya Pradesh — <strong>PIN:</strong> 465687
+                  </p>
+                </div>
+
+                <div className="pt-2">
+                  <a
+                    href="https://maps.google.com/?q=Ganesh+Mandir+Khujner+Rajgarh+Madhya+Pradesh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center space-x-2 w-full py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 hover:text-brand-orange hover:border-brand-orange font-bold text-xs transition-colors"
+                  >
+                    <Compass className="w-4 h-4" />
+                    <span>Get Directions on Google Maps</span>
+                    <ExternalLink className="w-3.5 h-3.5 ml-1 text-slate-400" />
+                  </a>
+                </div>
               </div>
             </div>
 

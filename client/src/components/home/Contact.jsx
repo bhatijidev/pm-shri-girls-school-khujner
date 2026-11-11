@@ -43,6 +43,25 @@ export default function Contact() {
           {/* Left: Contact Info & Address */}
           <div className="lg:col-span-6 space-y-6">
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-orange-100 space-y-6">
+              
+              {/* Campus Photo Header */}
+              <div className="relative h-48 rounded-2xl overflow-hidden border border-orange-100 group shadow-sm">
+                <img
+                  src="/images/school-building.jpg"
+                  alt="PM SHRI Govt Girls School Khujner Main Building"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                <div className="absolute bottom-3 left-4 right-4 text-white">
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-orange px-2 py-0.5 rounded shadow-sm">
+                    Official Campus Building
+                  </span>
+                  <p className="text-xs font-semibold text-white/95 mt-1">
+                    मुख्य विद्यालय परिसर — गणेश मंदिर के सामने, खुजनेर (म.प्र.)
+                  </p>
+                </div>
+              </div>
+
               <h3 className="text-xl font-heading font-bold text-slate-900">
                 School Administrative Office
               </h3>
