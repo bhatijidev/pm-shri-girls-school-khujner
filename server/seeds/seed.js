@@ -3,6 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import db from '../config/db.js';
+import { expandedBooks } from './add_expanded_books.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -565,6 +566,16 @@ for (const b of portals) {
   bookList.push({
     ...b,
     link_type: 'external',
+    is_public_domain: 1
+  });
+}
+
+// 4E. Add Comprehensive Competitive Exam, Hindu Dharm, & Girls Inspiration Books
+for (const b of expandedBooks) {
+  const isDirectPdf = b.pdf_file_url && (b.pdf_file_url.toLowerCase().endsWith('.pdf') || b.pdf_file_url.includes('/pdf/'));
+  bookList.push({
+    ...b,
+    link_type: isDirectPdf ? 'pdf' : 'external',
     is_public_domain: 1
   });
 }

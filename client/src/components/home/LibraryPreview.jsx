@@ -35,7 +35,7 @@ export default function LibraryPreview() {
     {
       name: 'Hindu Dharm Sacred Granth',
       nameHindi: 'हिन्दू धर्म ग्रंथ (गीताप्रेस)',
-      desc: 'Public domain Bhagavad Gita, Valmiki Ramayana, and Shri Ramcharitmanas.',
+      desc: 'Bhagavad Gita, Ramcharitmanas, Ramayana, Chanakya Niti, Vidur Niti, Panchatantra & Puranas.',
       image: '/images/books/cat-hindudharm.jpg',
       badge: 'Public Domain',
       color: 'bg-amber-600',
@@ -44,7 +44,7 @@ export default function LibraryPreview() {
     {
       name: 'Competitive Exam Hub',
       nameHindi: 'प्रतियोगी परीक्षा तैयारी',
-      desc: 'Free access to National Digital Library of India (NDLI), IGNOU eGyanKosh, NIOS & SWAYAM.',
+      desc: 'UPSC, MPPSC, SSC, General Knowledge, Constitution, Hindi Grammar, NEET & JEE Preparation.',
       image: '/images/books/cat-competitive.jpg',
       badge: 'Govt. Portals',
       color: 'bg-purple-600',
@@ -53,7 +53,7 @@ export default function LibraryPreview() {
     {
       name: 'School Guides & Career',
       nameHindi: 'कन्या करियर मार्गदर्शन',
-      desc: 'Internal handbooks on Ladli Laxmi scholarship, defense academies, and NEP 2020 modules.',
+      desc: 'Inspiring biographies (Dr. Kalam, Swami Vivekananda, Rani Lakshmibai) & Girls career roadmaps.',
       image: '/images/books/cat-career.jpg',
       badge: 'Khujner HSS',
       color: 'bg-teal-600',
@@ -84,7 +84,7 @@ export default function LibraryPreview() {
             to="/library"
             className="inline-flex items-center space-x-2 bg-gradient-to-r from-brand-orange to-brand-red text-white font-bold px-6 py-3.5 rounded-xl shadow-md shadow-orange-500/20 hover:shadow-lg transition-all transform hover:-translate-y-0.5 self-start md:self-auto text-sm"
           >
-            <span>Open Full Library (55+ Books)</span>
+            <span>Open Full Library (500+ Books)</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -163,7 +163,7 @@ export default function LibraryPreview() {
             to="/library"
             className="text-xs font-bold uppercase tracking-wider text-brand-orange hover:underline whitespace-nowrap self-start sm:self-auto"
           >
-            Explore All 55+ Books →
+            Explore All 500+ Books →
           </Link>
         </div>
 
