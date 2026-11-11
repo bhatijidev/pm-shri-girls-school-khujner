@@ -85,21 +85,21 @@ export default function AboutSchool() {
             {/* Main Featured Photo */}
             <div className="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white bg-slate-900 group">
               <img
-                src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80"
-                alt="Students studying at PM SHRI Girls HSS Khujner"
+                src="/images/events/farewell-ceremony.jpg"
+                alt="Students ceremony at PM SHRI Girls HSS Khujner"
                 className="w-full h-72 object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent"></div>
               
               <div className="absolute bottom-4 left-4 right-4 text-white">
                 <span className="text-[10px] font-bold uppercase tracking-wider bg-brand-orange px-2 py-0.5 rounded-md">
-                  Girls in STEM & Education
+                  Official School Event • PM SHRI Khujner
                 </span>
                 <h4 className="font-heading font-bold text-base mt-1">
-                  Empowering Young Minds Every Day
+                  बालिका प्रतिभा सम्मान एवं दीक्षांत समारोह
                 </h4>
-                <p className="text-xs text-slate-300">
-                  Collaborative, question-based learning environment
+                <p className="text-xs text-orange-200">
+                  Annual Class 12 Academic Felicitation & Farewell Ceremony
                 </p>
               </div>
             </div>

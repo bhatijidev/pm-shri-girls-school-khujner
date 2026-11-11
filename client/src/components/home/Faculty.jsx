@@ -1,5 +1,5 @@
 import React from 'react';
-import { Award, BookOpen, GraduationCap } from 'lucide-react';
+import { Award, BookOpen, GraduationCap, Sparkles } from 'lucide-react';
 
 export default function Faculty() {
   const teachers = [
@@ -9,7 +9,8 @@ export default function Faculty() {
       roleHindi: 'प्राचार्य',
       qual: 'M.Sc., M.Ed., Ph.D.',
       exp: '22+ Years in School Administration',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80'
+      initials: 'SS',
+      color: 'from-amber-600 to-orange-600'
     },
     {
       name: 'Smt. Rekha Verma',
@@ -17,7 +18,8 @@ export default function Faculty() {
       roleHindi: 'उप-प्राचार्य (गणित)',
       qual: 'M.Sc. Mathematics, B.Ed.',
       exp: '18+ Years Academic Experience',
-      image: 'https://images.unsplash.com/photo-1580894732444-8ecded7900cd?w=400&q=80'
+      initials: 'RV',
+      color: 'from-blue-600 to-indigo-600'
     },
     {
       name: 'Shri Rajesh Patidar',
@@ -25,7 +27,8 @@ export default function Faculty() {
       roleHindi: 'व्याख्याता (भौतिक शास्त्र)',
       qual: 'M.Sc. Physics, NET Qualified',
       exp: '14+ Years STEM Mentorship',
-      image: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?w=400&q=80'
+      initials: 'RP',
+      color: 'from-emerald-600 to-teal-600'
     },
     {
       name: 'Dr. Anita Malviya',
@@ -33,7 +36,8 @@ export default function Faculty() {
       roleHindi: 'व्याख्याता (रसायन शास्त्र)',
       qual: 'M.Sc., Ph.D. Chemistry',
       exp: '15+ Years Board Exam Trainer',
-      image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80'
+      initials: 'AM',
+      color: 'from-purple-600 to-rose-600'
     },
     {
       name: 'Smt. Kavita Rajput',
@@ -41,7 +45,8 @@ export default function Faculty() {
       roleHindi: 'उच्च श्रेणी शिक्षक (सामाजिक विज्ञान)',
       qual: 'M.A. History & Civics, B.Ed.',
       exp: '12+ Years Experience',
-      image: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80'
+      initials: 'KR',
+      color: 'from-rose-600 to-pink-600'
     },
     {
       name: 'Smt. Pooja Gupta',
@@ -49,7 +54,8 @@ export default function Faculty() {
       roleHindi: 'कंप्यूटर अनुदेशक',
       qual: 'MCA, B.Tech Computer Science',
       exp: '8+ Years Tech Educator',
-      image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80'
+      initials: 'PG',
+      color: 'from-cyan-600 to-blue-600'
     }
   ];
 
@@ -59,8 +65,8 @@ export default function Faculty() {
         
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
-          <div className="inline-flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider bg-orange-50 px-3 py-1 rounded-full">
-            <GraduationCap className="w-4 h-4" />
+          <div className="inline-flex items-center space-x-2 text-brand-orange text-xs font-bold uppercase tracking-wider bg-orange-100/60 px-3 py-1 rounded-full">
+            <Sparkles className="w-4 h-4" />
             <span>Academic Leadership</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-heading font-extrabold text-slate-900">
@@ -79,14 +85,9 @@ export default function Faculty() {
               className="rounded-3xl p-6 bg-brand-cream border border-orange-100 hover:border-brand-orange/40 hover:shadow-xl transition-all duration-300 space-y-4 group"
             >
               <div className="flex items-center space-x-4">
-                {/* Real Teacher Portrait Photo */}
-                <div className="relative w-16 h-16 rounded-2xl overflow-hidden shadow-md flex-shrink-0 border-2 border-white group-hover:scale-105 transition-transform">
-                  <img
-                    src={t.image}
-                    alt={t.name}
-                    className="w-full h-full object-cover object-center"
-                    loading="lazy"
-                  />
+                {/* Professional Initial Avatar */}
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${t.color} text-white flex items-center justify-center font-heading font-extrabold text-xl shadow-md flex-shrink-0 group-hover:scale-105 transition-transform`}>
+                  {t.initials}
                 </div>
                 <div>
                   <h4 className="font-heading font-bold text-lg text-slate-900 group-hover:text-brand-orange transition-colors">
