@@ -1,0 +1,22 @@
+name: Keep Render Alive
+
+on:
+  schedule:
+    # Run every 10 minutes to prevent Render free instance from spinning down (15 min inactivity timeout)
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping School Health Endpoint
+        run: |
+          response=$(curl -s -o /dev/null -w "%{http_code}" -m 60 "https://pm-shri-girls-school-khujner.onrender.com/api/health")
+          echo "Health endpoint response code: $response"
+          if [ "$response" -eq 200 ]; then
+            echo "✅ School portal is awake and healthy!"
+          else
+            echo "⚠️ Non-200 response or waking up: $response"
+          fi
