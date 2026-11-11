@@ -61,6 +61,19 @@ api.interceptors.request.use((config) => {
   return Promise.reject(error);
 });
 
+// Interceptor to handle expired tokens and unauthorized responses cleanly
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      if (localStorage.getItem('pmshri_token') && !error.config?.url?.includes('/auth/login')) {
+        authService.logout();
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 // Auth API
 export const authService = {
   login: async (username, password) => {

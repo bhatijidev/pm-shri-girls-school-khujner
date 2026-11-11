@@ -4,8 +4,8 @@ import { apiCache } from '../utils/cache.js';
 // GET /api/books — paginated, filterable, searchable
 export const getAllBooks = (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 12;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(Math.max(1, parseInt(req.query.limit) || 12), 60);
     const offset = (page - 1) * limit;
     const categoryId = req.query.category;
     const classGrade = req.query.class;
@@ -219,15 +219,23 @@ export const createBook = (req, res) => {
       link_type, external_url, pdf_file_url, is_public_domain
     } = req.body;
 
-    if (!title || !category_id) {
+    if (!title || !category_id || typeof title !== 'string' || title.trim().length > 300) {
       return res.status(400).json({
         success: false,
-        message: 'Title and category_id are required.'
+        message: 'Valid title (≤ 300 characters) and category_id are required.'
+      });
+    }
+
+    const cleanCategoryId = parseInt(category_id);
+    if (!cleanCategoryId || cleanCategoryId < 1) {
+      return res.status(400).json({
+        success: false,
+        message: 'category_id must be a valid positive integer.'
       });
     }
 
     // Verify category exists
-    const category = db.prepare('SELECT id FROM categories WHERE id = ?').get(category_id);
+    const category = db.prepare('SELECT id FROM categories WHERE id = ?').get(cleanCategoryId);
     if (!category) {
       return res.status(400).json({
         success: false,

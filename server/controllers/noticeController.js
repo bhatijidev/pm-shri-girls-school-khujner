@@ -4,8 +4,8 @@ import { apiCache } from '../utils/cache.js';
 // GET /api/notices — paginated, filterable, searchable
 export const getAllNotices = (req, res) => {
   try {
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(Math.max(1, parseInt(req.query.limit) || 10), 50);
     const offset = (page - 1) * limit;
     const category = req.query.category;
     const search = req.query.search;
@@ -191,10 +191,17 @@ export const createNotice = (req, res) => {
       category, is_urgent, attachment_url, expires_at
     } = req.body;
 
-    if (!title || !content) {
+    if (!title || !content || typeof title !== 'string' || typeof content !== 'string') {
       return res.status(400).json({
         success: false,
-        message: 'Title and content are required.'
+        message: 'Valid title and content strings are required.'
+      });
+    }
+
+    if (title.trim().length > 300 || content.trim().length > 15000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Title must be ≤ 300 characters and content ≤ 15,000 characters.'
       });
     }
 
