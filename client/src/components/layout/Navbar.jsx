@@ -21,12 +21,13 @@ export default function Navbar() {
     { name: 'Notices', path: '/notices', icon: Bell },
     { name: 'Digital Library', path: '/library', icon: BookOpen },
     { name: 'Facilities', path: '/#facilities', icon: Sparkles },
-    { name: 'Contact', path: '/#contact', icon: Phone }
+    { name: 'Contact Us', path: '/contact', icon: Phone }
   ];
 
   const isActive = (path) => {
-    if (path === '/') return location.pathname === '/';
-    return location.pathname.startsWith(path);
+    if (path === '/') return location.pathname === '/' && !location.hash;
+    if (path.startsWith('/#')) return location.pathname === '/' && location.hash === path.substring(1);
+    return location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
   };
 
   return (

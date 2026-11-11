@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ArrowRight } from 'lucide-react';
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -26,6 +27,15 @@ export default function Contact() {
           <p className="font-hindi text-base text-slate-600">
             प्रवेश संबंधी पूछताछ अथवा संपर्क हेतु विद्यालय कार्यालय में पधारें
           </p>
+          <div className="pt-2">
+            <Link
+              to="/contact"
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-brand-orange to-brand-red text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm hover:opacity-95 transition-all"
+            >
+              <span>Visit Dedicated Contact Page</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">

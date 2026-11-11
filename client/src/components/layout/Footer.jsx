@@ -66,6 +66,11 @@ export default function Footer() {
                   Our Dedicated Teachers
                 </a>
               </li>
+              <li>
+                <Link to="/contact" className="text-slate-400 hover:text-brand-orange transition-colors">
+                  Contact Us & Campus Support
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -170,6 +175,14 @@ export default function Footer() {
               <div className="flex items-center space-x-3">
                 <Clock className="w-4 h-4 text-brand-orange flex-shrink-0" />
                 <span>Mon – Sat: 8:00 AM – 4:00 PM</span>
+              </div>
+              <div className="pt-2">
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center space-x-1.5 text-brand-orange hover:text-orange-300 text-xs font-semibold"
+                >
+                  <span>Visit Full Contact & Support Desk →</span>
+                </Link>
               </div>
             </div>
           </div>

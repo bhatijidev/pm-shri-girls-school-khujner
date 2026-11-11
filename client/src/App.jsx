@@ -6,6 +6,7 @@ import HomePage from './pages/HomePage';
 // Route Code Splitting: Lazy load heavy subpages for instant initial landing page load
 const NoticesPage = lazy(() => import('./pages/NoticesPage'));
 const LibraryPage = lazy(() => import('./pages/LibraryPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 
 function PageLoader() {
@@ -45,6 +46,14 @@ export default function App() {
           element={
             <Layout>
               <LibraryPage />
+            </Layout>
+          }
+        />
+        <Route
+          path="/contact"
+          element={
+            <Layout>
+              <ContactPage />
             </Layout>
           }
         />
