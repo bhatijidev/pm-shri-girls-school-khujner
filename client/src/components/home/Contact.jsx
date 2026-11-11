@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ArrowRight } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, CheckCircle2, ArrowRight, ExternalLink } from 'lucide-react';
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -179,9 +179,21 @@ export default function Contact() {
 
           {/* Right: Embedded Interactive Map */}
           <div className="lg:col-span-6 bg-white rounded-3xl p-4 shadow-sm border border-orange-100 overflow-hidden space-y-4">
-            <div className="p-3">
-              <h3 className="font-heading font-bold text-base text-slate-900">Campus Geographical Location</h3>
-              <p className="text-xs text-slate-500">Opposite Ganesh Mandir, Khujner, District Rajgarh, MP - 465687</p>
+            <div className="p-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <h3 className="font-heading font-bold text-base text-slate-900">Campus Geographical Location</h3>
+                <p className="text-xs text-slate-500">Opposite Ganesh Mandir, Khujner, District Rajgarh, MP - 465687</p>
+              </div>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=PM+SHRI+Government+Girls+Higher+Secondary+School+Khujner+Rajgarh+MP"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-orange-50 hover:bg-orange-100 border border-orange-200 text-brand-orange text-xs font-bold transition-all shadow-sm flex-shrink-0"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Open in Google Maps</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
             
             <div className="w-full h-[520px] rounded-2xl overflow-hidden border border-slate-200 bg-slate-100 relative">

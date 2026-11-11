@@ -479,7 +479,7 @@ export default function ContactPage() {
               </p>
             </div>
 
-            <div className="flex items-center space-x-3 text-xs">
+            <div className="flex flex-wrap items-center gap-3 text-xs">
               <span className="flex items-center space-x-1.5 bg-slate-100 text-slate-700 px-3 py-1.5 rounded-lg">
                 <Bus className="w-4 h-4 text-brand-orange" />
                 <span>Khujner Bus Stand: 800m</span>
@@ -488,6 +488,16 @@ export default function ContactPage() {
                 <Building className="w-4 h-4 text-blue-600" />
                 <span>Rajgarh HQ: 35km</span>
               </span>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=PM+SHRI+Government+Girls+Higher+Secondary+School+Khujner+Rajgarh+MP"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-orange-50 hover:bg-orange-100 border border-orange-200 text-brand-orange font-bold transition-all shadow-sm"
+              >
+                <MapPin className="w-3.5 h-3.5" />
+                <span>Open in Google Maps</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
             </div>
           </div>
 

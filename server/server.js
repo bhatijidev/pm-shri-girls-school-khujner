@@ -65,18 +65,31 @@ app.use(helmet({
         'https://images.unsplash.com',
         'https://upload.wikimedia.org',
         'https://archive.org',
-        'https://*.google.com'
+        'https://*.google.com',
+        'https://*.google.co.in',
+        'https://*.gstatic.com',
+        'https://*.googleapis.com',
+        'https://*.googleusercontent.com',
+        'https://*.openstreetmap.org'
       ],
       frameSrc: [
         "'self'",
         'https://www.youtube.com',
         'https://www.youtube-nocookie.com',
-        'https://maps.google.com'
+        'https://maps.google.com',
+        'https://www.google.com',
+        'https://*.google.com',
+        'https://*.google.co.in',
+        'https://*.googleapis.com',
+        'https://*.openstreetmap.org'
       ],
       connectSrc: [
         "'self'",
         'https://pm-shri-girls-school-khujner.onrender.com',
-        'http://localhost:5000'
+        'http://localhost:5000',
+        'https://*.google.com',
+        'https://*.googleapis.com',
+        'https://*.gstatic.com'
       ],
       objectSrc: ["'none'"],
       baseUri: ["'self'"],
