@@ -69,6 +69,7 @@ export default function NoticesPage() {
       nextParams.delete('urgent');
     }
     setSearchParams(nextParams, { replace: true });
+    window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
   const handleSearch = (e) => {
@@ -87,6 +88,7 @@ export default function NoticesPage() {
       nextParams.delete('search');
     }
     setSearchParams(nextParams, { replace: true });
+    window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
   const handleSearchChange = (e) => {
@@ -106,6 +108,7 @@ export default function NoticesPage() {
     const nextParams = new URLSearchParams(searchParams);
     nextParams.delete('search');
     setSearchParams(nextParams, { replace: true });
+    window.scrollTo({ top: 200, behavior: 'smooth' });
   };
 
   const handleResetFilters = () => {

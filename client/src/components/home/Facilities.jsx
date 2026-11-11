@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Monitor, BookOpen, FlaskConical, Presentation, Trophy, Palette, 
@@ -124,6 +124,44 @@ export default function Facilities() {
     setActiveIndex((prev) => (prev === 0 ? facilities.length - 1 : prev - 1));
   };
 
+  const handleTabClick = (idx) => {
+    if (idx === activeIndex) {
+      // If already on this tab, still smoothly scroll to top of section
+      const el = document.getElementById('facilities');
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const navbarOffset = 80;
+        const targetY = window.pageYOffset + rect.top - navbarOffset;
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      }
+      return;
+    }
+    setDirection(idx > activeIndex ? 1 : -1);
+    setActiveIndex(idx);
+  };
+
+  const isFirstRender = useRef(true);
+
+  // Auto scroll to top of facilities section on tab switch
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+    const el = document.getElementById('facilities');
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const navbarOffset = 80;
+      if (rect.top < -10 || rect.top > 120) {
+        const targetY = window.pageYOffset + rect.top - navbarOffset;
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          behavior: 'smooth'
+        });
+      }
+    }
+  }, [activeIndex]);
+
   const current = facilities[activeIndex];
   const CurrentIcon = current.icon;
 
@@ -185,10 +223,7 @@ export default function Facilities() {
             return (
               <button
                 key={f.id}
-                onClick={() => {
-                  setDirection(idx > activeIndex ? 1 : -1);
-                  setActiveIndex(idx);
-                }}
+                onClick={() => handleTabClick(idx)}
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all duration-200 border ${
                   isActive
                     ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white border-transparent shadow-lg shadow-orange-500/25 scale-105'
@@ -306,10 +341,7 @@ export default function Facilities() {
                     {facilities.map((_, idx) => (
                       <button
                         key={idx}
-                        onClick={() => {
-                          setDirection(idx > activeIndex ? 1 : -1);
-                          setActiveIndex(idx);
-                        }}
+                        onClick={() => handleTabClick(idx)}
                         className={`transition-all duration-300 rounded-full ${
                           activeIndex === idx
                             ? 'w-7 h-2 bg-gradient-to-r from-brand-orange to-brand-red shadow-md'

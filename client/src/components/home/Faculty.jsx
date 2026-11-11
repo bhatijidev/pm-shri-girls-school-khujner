@@ -372,6 +372,22 @@ export default function Faculty() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  const handleCategorySelect = (key) => {
+    setSelectedCategory(key);
+    const el = document.getElementById('faculty');
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const navbarOffset = 80;
+      if (rect.top < -10 || rect.top > 120) {
+        const targetY = window.pageYOffset + rect.top - navbarOffset;
+        window.scrollTo({
+          top: Math.max(0, targetY),
+          behavior: 'smooth'
+        });
+      }
+    }
+  };
+
   const principal = officialFacultyList.find((f) => f.isPrincipal);
 
   const categories = [
@@ -524,7 +540,7 @@ export default function Faculty() {
                 return (
                   <button
                     key={c.key}
-                    onClick={() => setSelectedCategory(c.key)}
+                    onClick={() => handleCategorySelect(c.key)}
                     className={`flex items-center space-x-2 px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all ${
                       active
                         ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white shadow-md shadow-orange-500/20'

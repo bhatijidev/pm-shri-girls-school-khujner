@@ -25,6 +25,7 @@ export default function LibraryPage() {
       page: 1,
       category: catId
     }));
+    window.scrollTo({ top: 250, behavior: 'smooth' });
   };
 
   const handleClassChange = (cls) => {
@@ -34,6 +35,7 @@ export default function LibraryPage() {
       page: 1,
       class: cls
     }));
+    window.scrollTo({ top: 250, behavior: 'smooth' });
   };
 
   const handleSearch = (e) => {
