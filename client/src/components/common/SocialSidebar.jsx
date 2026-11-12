@@ -49,7 +49,7 @@ export default function SocialSidebar() {
   return (
     <aside
       aria-label="Social media quick links"
-      className="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex flex-col space-y-2 pointer-events-auto"
+      className="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex flex-col items-start space-y-2 pointer-events-auto select-none"
     >
       {socialLinks.map((item, idx) => {
         const Icon = item.icon;
@@ -61,18 +61,22 @@ export default function SocialSidebar() {
             rel={item.href.startsWith('tel:') ? undefined : 'noopener noreferrer'}
             initial={{ x: -20, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: idx * 0.08, duration: 0.3 }}
-            className={`group relative flex items-center bg-white/75 dark:bg-slate-900/75 backdrop-blur-2xl border-t border-r border-b border-white/80 dark:border-white/20 shadow-[0_8px_24px_rgba(0,0,0,0.08),inset_0_1px_2px_rgba(255,255,255,0.95)] py-2.5 px-3 rounded-r-2xl transition-all duration-300 transform hover:translate-x-2 hover:pl-4 hover:shadow-xl ${item.iconColor} ${item.hoverBg}`}
+            whileHover={{ x: 8 }}
+            transition={{
+              x: { type: 'spring', stiffness: 350, damping: 22 },
+              default: { duration: 0.25, delay: idx * 0.05 }
+            }}
+            className={`group relative flex items-center justify-center w-12 h-11 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl border-t border-r border-b border-white/80 dark:border-white/20 shadow-[0_4px_16px_rgba(0,0,0,0.08),inset_0_1px_2px_rgba(255,255,255,0.95)] rounded-r-2xl transition-[background-color,border-color,box-shadow] duration-200 ${item.iconColor} ${item.hoverBg}`}
           >
             {/* Liquid Glass Top Edge Specular Reflection */}
             <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-white/95 via-white/50 to-transparent pointer-events-none rounded-tr-2xl" />
 
             {/* Social Icon */}
-            <Icon className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-120 relative z-10" />
+            <Icon className="w-5 h-5 flex-shrink-0 transition-transform duration-200 group-hover:scale-115 relative z-10" />
 
             {/* Slide-out Tooltip / Label */}
-            <div className="absolute left-full ml-3 hidden sm:flex items-center opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 transform -translate-x-2 group-hover:translate-x-0 z-50">
-              <div className="bg-slate-950/90 backdrop-blur-xl text-white text-xs font-semibold px-3.5 py-2 rounded-xl shadow-2xl whitespace-nowrap border border-white/15">
+            <div className="absolute left-full ml-3 hidden sm:flex items-center opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-200 -translate-x-2 group-hover:translate-x-0 z-50">
+              <div className="bg-slate-950/90 backdrop-blur-xl text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-2xl whitespace-nowrap border border-white/15">
                 <span className="font-bold block text-[11px] text-orange-300">{item.name}</span>
                 <span className="text-[10px] text-slate-300">{item.label}</span>
               </div>
