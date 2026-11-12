@@ -8,6 +8,7 @@ import PageTransition from './components/common/PageTransition';
 // Route Code Splitting: Lazy load heavy subpages for instant initial landing page load
 const NoticesPage = lazy(() => import('./pages/NoticesPage'));
 const LibraryPage = lazy(() => import('./pages/LibraryPage'));
+const FacultyPage = lazy(() => import('./pages/FacultyPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 
@@ -51,6 +52,14 @@ function PublicLayoutWrapper() {
             element={
               <PageTransition>
                 <LibraryPage />
+              </PageTransition>
+            }
+          />
+          <Route
+            path="/faculty"
+            element={
+              <PageTransition>
+                <FacultyPage />
               </PageTransition>
             }
           />

@@ -62,9 +62,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="#faculty" className="text-slate-400 hover:text-brand-orange transition-colors">
-                  Our Dedicated Teachers
-                </a>
+                <Link to="/faculty" className="text-slate-400 hover:text-brand-orange transition-colors">
+                  Our Dedicated Faculty (30 Members)
+                </Link>
               </li>
               <li>
                 <Link to="/contact" className="text-slate-400 hover:text-brand-orange transition-colors">

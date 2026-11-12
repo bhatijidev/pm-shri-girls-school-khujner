@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle2, Award, Users, BookMarked, GraduationCap, Sparkles, ShieldCheck } from 'lucide-react';
 import AnimatedCounter from '../ui/AnimatedCounter';
@@ -143,25 +144,31 @@ export default function AboutSchool() {
                 <p className="text-[10px] text-slate-400 font-hindi">उत्कृष्ट बोर्ड परिणाम</p>
               </div>
 
-              <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
-                <div className="text-3xl font-extrabold text-blue-600">
+              <Link
+                to="/faculty"
+                className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1 hover:border-blue-300 hover:shadow-md transition-all group block"
+              >
+                <div className="text-3xl font-extrabold text-blue-600 group-hover:scale-105 transition-transform">
                   <AnimatedCounter end={stats.facultyCount} suffix="" />
                 </div>
-                <p className="text-xs font-semibold uppercase text-slate-500">
+                <p className="text-xs font-semibold uppercase text-slate-500 group-hover:text-blue-600 transition-colors">
                   Faculty Members
                 </p>
-                <p className="text-[10px] text-slate-400 font-hindi">समर्पित शिक्षक एवं स्टाफ</p>
-              </div>
+                <p className="text-[10px] text-slate-400 font-hindi">समर्पित शिक्षक एवं स्टाफ →</p>
+              </Link>
 
-              <div className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1">
-                <div className="text-3xl font-extrabold text-emerald-600">
+              <Link
+                to="/library"
+                className="bg-white rounded-2xl p-5 shadow-sm border border-orange-100 text-center space-y-1 hover:border-emerald-300 hover:shadow-md transition-all group block"
+              >
+                <div className="text-3xl font-extrabold text-emerald-600 group-hover:scale-105 transition-transform">
                   <AnimatedCounter end={stats.totalBooks} suffix="+" />
                 </div>
-                <p className="text-xs font-semibold uppercase text-slate-500">
+                <p className="text-xs font-semibold uppercase text-slate-500 group-hover:text-emerald-600 transition-colors">
                   Digital E-Books
                 </p>
-                <p className="text-[10px] text-slate-400 font-hindi">ई-पुस्तकालय भंडार</p>
-              </div>
+                <p className="text-[10px] text-slate-400 font-hindi">ई-पुस्तकालय भंडार →</p>
+              </Link>
             </div>
 
           </div>
