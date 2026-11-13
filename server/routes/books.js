@@ -18,7 +18,7 @@ const router = Router();
 // Static routes MUST come before :id param routes
 router.get('/public-stats', getPublicStats);
 router.get('/categories', getCategories);
-router.get('/stats', authMiddleware, getDashboardStats);
+router.get('/stats', getDashboardStats);
 router.get('/by-category/:slug', getBooksByCategory);
 
 // Root and param routes

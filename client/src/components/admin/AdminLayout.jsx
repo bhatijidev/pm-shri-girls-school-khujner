@@ -41,7 +41,7 @@ export default function AdminLayout({ user, onLogout }) {
     <div className="min-h-screen bg-slate-100 flex flex-col md:flex-row">
       
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-slate-900 text-white flex flex-col justify-between flex-shrink-0 border-r border-slate-800">
+      <aside className="w-full md:w-64 bg-slate-900 text-white flex flex-col justify-between flex-shrink-0 border-r border-slate-800 md:sticky md:top-0 md:h-screen md:max-h-screen overflow-y-auto z-30">
         <div>
           {/* Brand header */}
           <div className="p-6 border-b border-slate-800 space-y-3">
@@ -90,31 +90,35 @@ export default function AdminLayout({ user, onLogout }) {
         </div>
 
         {/* Bottom Actions */}
-        <div className="p-4 border-t border-slate-800 space-y-2">
+        <div className="p-4 pb-6 border-t border-slate-800/80 space-y-2 bg-slate-950/60 mt-auto">
           <button
             onClick={() => setPasswordModal(true)}
-            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors"
+            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <KeyRound className="w-4 h-4" />
+            <KeyRound className="w-4 h-4 text-amber-400 flex-shrink-0" />
             <span>Change Password</span>
           </button>
 
           <Link
             to="/"
             target="_blank"
-            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-colors"
+            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4 text-sky-400 flex-shrink-0" />
             <span>View Public Website</span>
           </Link>
 
           <button
             onClick={onLogout}
-            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:text-rose-300 hover:bg-rose-950/40 transition-colors"
+            className="w-full flex items-center space-x-3 px-4 py-2.5 rounded-xl text-xs font-bold text-rose-400 hover:text-white hover:bg-rose-600/80 transition-colors"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 text-rose-400 flex-shrink-0" />
             <span>Sign Out</span>
           </button>
+
+          <div className="pt-2 text-center text-[10px] text-slate-500 font-medium border-t border-white/5">
+            PM SHRI Khujner • Portal 2026
+          </div>
         </div>
       </aside>
 

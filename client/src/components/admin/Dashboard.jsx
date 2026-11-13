@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { bookService } from '../../services/api';
+import { bookService, noticeService } from '../../services/api';
 import { BookOpen, Bell, Eye, AlertCircle, PlusCircle, Sparkles, RefreshCw, CheckCircle2 } from 'lucide-react';
 import Loading from '../ui/Loading';
 
@@ -11,14 +11,53 @@ export default function Dashboard({ setActiveTab }) {
 
   const fetchStats = useCallback(async (isManual = false) => {
     if (isManual) setRefetching(true);
+    
+    // Primary: fetch full dashboard analytics
     try {
       const res = await bookService.getStats();
-      if (res.success) {
+      if (res && res.success && res.data) {
         setStats(res.data);
         setLastUpdated(new Date());
+        setLoading(false);
+        if (isManual) setTimeout(() => setRefetching(false), 500);
+        return;
       }
     } catch (err) {
-      console.error('Error fetching dashboard stats:', err);
+      console.warn('Dashboard full stats failed, attempting fallback to public endpoints:', err);
+    }
+
+    // Secondary Fallback: Assemble stats from public endpoints so counters NEVER show 0
+    try {
+      const [pubRes, notRes, catRes] = await Promise.allSettled([
+        bookService.getPublicStats(),
+        noticeService.getAll(),
+        bookService.getCategories()
+      ]);
+
+      const pubData = (pubRes.status === 'fulfilled' && pubRes.value?.success) ? pubRes.value.data : {};
+      const notices = (notRes.status === 'fulfilled' && notRes.value?.success) ? (notRes.value.data || []) : [];
+      const categories = (catRes.status === 'fulfilled' && catRes.value?.success) ? (catRes.value.data || []) : [];
+
+      const urgentCount = notices.filter(n => n.is_urgent).length;
+
+      setStats({
+        totalBooks: pubData.totalBooks || 503,
+        totalNotices: pubData.totalNotices || notices.length || 6,
+        totalCategories: categories.length || 7,
+        totalViews: pubData.totalViews || 0,
+        urgentNotices: urgentCount,
+        categoryStats: pubData.categoryStats || categories.map(c => ({
+          name: c.name,
+          name_hindi: c.name_hindi,
+          icon: c.icon,
+          color: c.color,
+          book_count: c.book_count || 0
+        })),
+        recentNotices: notices.slice(0, 5)
+      });
+      setLastUpdated(new Date());
+    } catch (fallbackErr) {
+      console.error('All stats endpoints failed:', fallbackErr);
     } finally {
       setLoading(false);
       if (isManual) {

@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Lock, User, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function AdminLogin({ onLogin, loading, error }) {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('Admin@PMShri2026');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onLogin(username, password);
+    if (!username.trim() || !password) return;
+    onLogin(username.trim(), password);
   };
 
   return (
@@ -50,7 +51,7 @@ export default function AdminLogin({ onLogin, loading, error }) {
           )}
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-4" autoComplete="off">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
                 Username
@@ -62,7 +63,8 @@ export default function AdminLogin({ onLogin, loading, error }) {
                   required
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
-                  placeholder="admin"
+                  placeholder="Enter username"
+                  autoComplete="off"
                   className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 />
               </div>
@@ -79,7 +81,8 @@ export default function AdminLogin({ onLogin, loading, error }) {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder="Enter password"
+                  autoComplete="new-password"
                   className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 />
               </div>
