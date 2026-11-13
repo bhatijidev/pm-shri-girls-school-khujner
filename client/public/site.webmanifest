@@ -1,0 +1,26 @@
+{
+  "name": "PM SHRI Government Girls Higher Secondary School, Khujner",
+  "short_name": "PM SHRI Khujner",
+  "description": "Official Portal of PM SHRI Govt. Girls Higher Secondary School, Khujner (M.P.)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#F7941D",
+  "icons": [
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
