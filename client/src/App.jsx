@@ -89,8 +89,9 @@ export default function App() {
       {isAdmin ? (
         <Routes>
           {/* Secret Admin Route - No link on public site */}
-          <Route path="/admin/pmshri-khujner-2024" element={<AdminPage />} />
-          <Route path="*" element={<Navigate to="/admin/pmshri-khujner-2024" replace />} />
+          <Route path="/admin/pmshri-khujner-2026" element={<AdminPage />} />
+          <Route path="/admin/pmshri-khujner-2024" element={<Navigate to="/admin/pmshri-khujner-2026" replace />} />
+          <Route path="*" element={<Navigate to="/admin/pmshri-khujner-2026" replace />} />
         </Routes>
       ) : (
         <PublicLayoutWrapper />

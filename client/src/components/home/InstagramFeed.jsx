@@ -9,7 +9,7 @@ export default function InstagramFeed() {
   // Real photos of PM SHRI Govt Girls Higher Secondary School Khujner
   const photos = [
     {
-      titleHindi: 'निःशुल्क साइकिल वितरण समारोह 2024-25',
+      titleHindi: 'निःशुल्क साइकिल वितरण समारोह 2025-26',
       titleEnglish: 'Free Bicycle Distribution to Meritorious Students',
       tag: '#SamagraShiksha #CycleDistribution',
       location: 'Main Campus, Khujner',
@@ -26,7 +26,7 @@ export default function InstagramFeed() {
       date: 'Campus Grounds',
       image: '/images/events/farewell-ceremony.jpg',
       likes: 426,
-      description: 'सत्र 2024-25 में कक्षा 12वीं की बालिकाओं हेतु विदाई, आशीर्वाद एवं भविष्य की उच्च शिक्षा मार्गदर्शन समारोह।'
+      description: 'सत्र 2025-26 में कक्षा 12वीं की बालिकाओं हेतु विदाई, आशीर्वाद एवं भविष्य की उच्च शिक्षा मार्गदर्शन समारोह।'
     },
     {
       titleHindi: 'मां सरस्वती प्रतिमा स्थापना एवं सांस्कृतिक मंच लोकार्पण',

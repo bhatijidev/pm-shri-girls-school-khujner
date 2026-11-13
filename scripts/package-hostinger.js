@@ -57,9 +57,9 @@ fs.copyFileSync(
 console.log('Creating production .env...');
 const envContent = `PORT=5000
 NODE_ENV=production
-JWT_SECRET=pmshri-khujner-secret-key-2024-girls-school
+JWT_SECRET=pmshri-khujner-secret-key-2026-girls-school
 JWT_EXPIRES_IN=8h
-ADMIN_SECRET_PATH=pmshri-khujner-2024
+ADMIN_SECRET_PATH=pmshri-khujner-2026
 `;
 fs.writeFileSync(path.join(destRoot, '.env'), envContent, 'utf-8');
 
@@ -111,9 +111,9 @@ Agar aapko manual zip upload nahi karna:
 ---
 
 ## 🔐 Admin Portal Login Details
-- **Admin Login URL:** \`https://yourdomain.com/admin/pmshri-khujner-2024\`
+- **Admin Login URL:** \`https://yourdomain.com/admin/pmshri-khujner-2026\`
 - **Default Username:** \`admin\`
-- **Default Password:** \`Admin@PMShri2024\`
+- **Default Password:** \`Admin@PMShri2026\`
 
 ---
 

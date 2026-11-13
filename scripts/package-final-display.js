@@ -101,9 +101,9 @@ fs.writeFileSync(
 // Backend .env
 const backendEnv = `PORT=5000
 NODE_ENV=production
-JWT_SECRET=pmshri-khujner-secret-key-2024-girls-school
+JWT_SECRET=pmshri-khujner-secret-key-2026-girls-school
 JWT_EXPIRES_IN=8h
-ADMIN_SECRET_PATH=pmshri-khujner-2024
+ADMIN_SECRET_PATH=pmshri-khujner-2026
 ALLOWED_ORIGINS=https://pmshrigirlskhujner.in,https://www.pmshrigirlskhujner.in,https://backend.pmshrigirlskhujner.in
 `;
 fs.writeFileSync(path.join(backendDir, '.env'), backendEnv, 'utf-8');
@@ -193,9 +193,9 @@ STEP 3: FRONTEND UPLOAD KAREIN (pmshrigirlskhujner.in)
 --------------------------------------------------------------------------------
 🔐 ADMIN DASHBOARD LOGIN CREDENTIALS
 --------------------------------------------------------------------------------
-- URL:      https://pmshrigirlskhujner.in/admin/pmshri-khujner-2024
+- URL:      https://pmshrigirlskhujner.in/admin/pmshri-khujner-2026
 - Username: admin
-- Password: Admin@PMShri2024
+- Password: Admin@PMShri2026
 ================================================================================
 `;
 

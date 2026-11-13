@@ -16,4 +16,4 @@ services:
       - key: JWT_EXPIRES_IN
         value: 8h
       - key: ADMIN_SECRET_PATH
-        value: pmshri-khujner-2024
+        value: pmshri-khujner-2026

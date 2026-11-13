@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 console.log('🌱 Starting Full Textbook Catalog Seeder for PM SHRI Girls HSS Khujner...');
 
 // 1. Verify/Seed Admin User
-const adminPassword = 'PmShri@Khujner2024';
+const adminPassword = 'Admin@PMShri2026';
 const salt = bcrypt.genSaltSync(12);
 const passwordHash = bcrypt.hashSync(adminPassword, salt);
 

@@ -3,7 +3,7 @@ import { Lock, User, ShieldCheck, ArrowRight, AlertCircle } from 'lucide-react';
 
 export default function AdminLogin({ onLogin, loading, error }) {
   const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('PmShri@Khujner2024');
+  const [password, setPassword] = useState('Admin@PMShri2026');
 
   const handleSubmit = (e) => {
     e.preventDefault();

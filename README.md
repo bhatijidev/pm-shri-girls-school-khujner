@@ -26,9 +26,9 @@ Key features include:
 > [!IMPORTANT]
 > There is **no login button** on the public website. Access the admin dashboard directly using:
 
-- **Secret Admin URL**: `http://localhost:5173/admin/pmshri-khujner-2024`
+- **Secret Admin URL**: `http://localhost:5173/admin/pmshri-khujner-2026`
 - **Username**: `admin`
-- **Password**: `PmShri@Khujner2024`
+- **Password**: `Admin@PMShri2026`
 - **Official Email**: `principalgghsskhujner@gmail.com`
 - **Principal Contact**: `+91 95759 62662` / `+91 95750 53750`
 - **Address**: PM Shri Government Girls HSS School, Opposite Ganesh Mandir, Khujner, District Rajgarh, PIN Code: 465687
