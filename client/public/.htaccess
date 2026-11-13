@@ -1,7 +1,14 @@
 # 1. Prevent Directory Listing
 Options -Indexes
 
-# 2. Ensure robots.txt and sitemap.xml are publicly accessible with exact headers
+# 2. Strict Security: Block all search engines from ever indexing /admin or /api
+<IfModule mod_headers.c>
+  SetEnvIf Request_URI "^/admin" BLOCK_SEARCH_ENGINES=true
+  SetEnvIf Request_URI "^/api" BLOCK_SEARCH_ENGINES=true
+  Header set X-Robots-Tag "noindex, nofollow, noarchive, nosnippet" env=BLOCK_SEARCH_ENGINES
+</IfModule>
+
+# 3. Ensure robots.txt and sitemap.xml are publicly accessible with exact headers
 <Files "robots.txt">
   Require all granted
   Header set Content-Type "text/plain; charset=UTF-8"
@@ -13,7 +20,7 @@ Options -Indexes
   Header set Content-Type "application/xml; charset=UTF-8"
 </Files>
 
-# 3. React SPA Fallback Routing
+# 4. React SPA Fallback Routing
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
