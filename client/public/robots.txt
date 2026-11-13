@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 
-Sitemap: https://pm-shri-girls-school-khujner.onrender.com/sitemap.xml
+Sitemap: https://pmshrigirlskhujner.in/sitemap.xml

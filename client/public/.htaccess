@@ -1,0 +1,25 @@
+# 1. Prevent Directory Listing
+Options -Indexes
+
+# 2. Ensure robots.txt and sitemap.xml are publicly accessible with exact headers
+<Files "robots.txt">
+  Require all granted
+  Header set Content-Type "text/plain; charset=UTF-8"
+  Header set X-Robots-Tag "all"
+</Files>
+
+<Files "sitemap.xml">
+  Require all granted
+  Header set Content-Type "application/xml; charset=UTF-8"
+</Files>
+
+# 3. React SPA Fallback Routing
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+</IfModule>
