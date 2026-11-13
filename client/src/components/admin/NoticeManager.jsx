@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { noticeService, uploadService } from '../../services/api';
+import { noticeService, uploadService, resolveMediaUrl } from '../../services/api';
 import { Plus, Edit2, Trash2, AlertCircle, FileText, Upload, Check, X, Search, Bell } from 'lucide-react';
 import Loading from '../ui/Loading';
 
@@ -227,7 +227,7 @@ export default function NoticeManager() {
                     <td className="py-4 px-4 whitespace-nowrap">
                       {n.attachment_url ? (
                         <a
-                          href={n.attachment_url}
+                          href={resolveMediaUrl(n.attachment_url)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center space-x-1 text-brand-orange hover:underline font-semibold"

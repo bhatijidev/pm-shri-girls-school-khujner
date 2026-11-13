@@ -29,6 +29,12 @@ const allowedOrigins = [
   'http://localhost:3000',
   'http://127.0.0.1:5000',
   'http://127.0.0.1:5173',
+  'https://pmshrigirlskhujner.in',
+  'https://www.pmshrigirlskhujner.in',
+  'https://backend.pmshrigirlskhujner.in',
+  'http://pmshrigirlskhujner.in',
+  'http://www.pmshrigirlskhujner.in',
+  'http://backend.pmshrigirlskhujner.in',
   'https://pm-shri-girls-school-khujner.onrender.com'
 ];
 
@@ -40,7 +46,12 @@ if (process.env.ALLOWED_ORIGINS) {
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, curl, or same-origin)
-    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.onrender.com')) {
+    if (
+      !origin || 
+      allowedOrigins.includes(origin) || 
+      origin.endsWith('pmshrigirlskhujner.in') || 
+      origin.endsWith('.onrender.com')
+    ) {
       return callback(null, true);
     }
     return callback(new Error('Blocked by CORS policy (Unauthorized Origin)'));
@@ -85,6 +96,11 @@ app.use(helmet({
       ],
       connectSrc: [
         "'self'",
+        'https://pmshrigirlskhujner.in',
+        'https://www.pmshrigirlskhujner.in',
+        'https://backend.pmshrigirlskhujner.in',
+        'http://pmshrigirlskhujner.in',
+        'http://backend.pmshrigirlskhujner.in',
         'https://pm-shri-girls-school-khujner.onrender.com',
         'http://localhost:5000',
         'https://*.google.com',

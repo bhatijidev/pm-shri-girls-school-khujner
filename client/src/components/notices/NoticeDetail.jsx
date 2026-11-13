@@ -1,5 +1,6 @@
 import React from 'react';
 import { X, Calendar, AlertCircle, FileText, Download, User } from 'lucide-react';
+import { resolveMediaUrl } from '../../services/api';
 
 export default function NoticeDetail({ notice, onClose }) {
   if (!notice) return null;
@@ -71,7 +72,7 @@ export default function NoticeDetail({ notice, onClose }) {
           {notice.attachment_url && (
             <div className="pt-4 border-t border-slate-100">
               <a
-                href={notice.attachment_url}
+                href={resolveMediaUrl(notice.attachment_url)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-brand-orange to-brand-red text-white py-3.5 px-6 rounded-xl font-bold shadow-md hover:opacity-95 transition-all text-sm"

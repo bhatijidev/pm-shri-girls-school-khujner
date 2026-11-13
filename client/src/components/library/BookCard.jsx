@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { ExternalLink, Download, BookOpen, ShieldCheck, Eye, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { bookService } from '../../services/api';
+import { bookService, resolveMediaUrl } from '../../services/api';
 
 export default function BookCard({ book }) {
   const [imgError, setImgError] = useState(false);
   const [readsCount, setReadsCount] = useState(book.view_count || 0);
-  const targetUrl = book.pdf_file_url || book.external_url;
+  const targetUrl = resolveMediaUrl(book.pdf_file_url || book.external_url);
   const isDirectPdf = targetUrl && (targetUrl.toLowerCase().endsWith('.pdf') || targetUrl.includes('/pdf/'));
   const isExternal = book.link_type === 'external' && !isDirectPdf;
 
@@ -27,7 +27,7 @@ export default function BookCard({ book }) {
   };
 
   const gradient = categoryGradients[book.category_slug] || 'from-slate-700 to-slate-900';
-  let rawCover = !imgError && book.cover_image_url ? book.cover_image_url : null;
+  let rawCover = !imgError && book.cover_image_url ? resolveMediaUrl(book.cover_image_url) : null;
   // Dynamic WebP optimization for Unsplash images
   const coverUrl = rawCover && rawCover.includes('images.unsplash.com')
     ? rawCover.replace(/w=\d+/, 'w=360').replace(/q=\d+/, 'q=75') + (rawCover.includes('auto=format') ? '' : '&auto=format&fit=crop')

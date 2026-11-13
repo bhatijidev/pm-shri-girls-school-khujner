@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, AlertCircle, FileText, Download, ChevronDown, ChevronUp, Tag } from 'lucide-react';
+import { resolveMediaUrl } from '../../services/api';
 
 export default function NoticeCard({ notice, onSelect }) {
   const [expanded, setExpanded] = useState(false);
@@ -87,7 +88,7 @@ export default function NoticeCard({ notice, onSelect }) {
         <div className="pt-2 flex items-center justify-between border-t border-slate-100 text-xs">
           {notice.attachment_url ? (
             <a
-              href={notice.attachment_url}
+              href={resolveMediaUrl(notice.attachment_url)}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center space-x-1.5 text-brand-orange hover:text-brand-red font-semibold py-1 px-2.5 rounded-lg bg-orange-50 hover:bg-orange-100 transition-colors"

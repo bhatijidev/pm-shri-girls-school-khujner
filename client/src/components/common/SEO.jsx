@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const SITE_URL = 'https://pm-shri-girls-school-khujner.onrender.com';
+const SITE_URL = 'https://pmshrigirlskhujner.in';
 const DEFAULT_TITLE = 'PM SHRI Govt. Girls HSS, Khujner | मध्य प्रदेश';
 const DEFAULT_DESCRIPTION = 'Official Portal of PM SHRI Government Girls Higher Secondary School, Khujner (M.P.). Digital E-Library, Faculty, Announcements & Admissions.';
 const DEFAULT_IMAGE = `${SITE_URL}/images/school-building.jpg`;

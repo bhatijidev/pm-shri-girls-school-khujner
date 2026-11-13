@@ -1,6 +1,23 @@
 import axios from 'axios';
 
-const API_BASE = '/api';
+// Backend origin supporting split-domain architecture:
+// Frontend: https://pmshrigirlskhujner.in
+// Backend: https://backend.pmshrigirlskhujner.in
+export const BACKEND_URL = (import.meta.env.VITE_API_URL !== undefined
+  ? import.meta.env.VITE_API_URL
+  : (import.meta.env.PROD ? 'https://backend.pmshrigirlskhujner.in' : 'http://localhost:5000')
+).replace(/\/+$/, '');
+
+const API_BASE = BACKEND_URL ? `${BACKEND_URL}/api` : '/api';
+
+export const resolveMediaUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('//') || url.startsWith('data:')) {
+    return url;
+  }
+  if (!BACKEND_URL) return url;
+  return `${BACKEND_URL}${url.startsWith('/') ? url : `/${url}`}`;
+};
 
 const api = axios.create({
   baseURL: API_BASE,
