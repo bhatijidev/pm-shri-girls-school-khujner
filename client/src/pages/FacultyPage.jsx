@@ -229,7 +229,7 @@ export default function FacultyPage() {
           </div>
 
           {/* Category Filter Pills */}
-          <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-thin">
+          <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none" data-scrollbar="none">
             {facultyCategories.map((cat) => {
               const isSelected = selectedCategory === cat.key;
               return (

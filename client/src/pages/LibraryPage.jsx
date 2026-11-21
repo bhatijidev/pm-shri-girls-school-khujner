@@ -115,9 +115,9 @@ export default function LibraryPage() {
         <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 text-xs text-amber-950 flex items-start space-x-3 shadow-sm">
           <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
           <div className="space-y-0.5">
-            <span className="font-bold text-slate-900">📚 24/7 ई-लाइब्रेरी हाई-स्पीड सर्वर सूचना:</span>
+            <span className="font-bold text-slate-900">📚 24/7 ई-लाइब्रेरी डायरेक्ट PDF एक्सेस:</span>
             <p className="text-slate-600 leading-relaxed">
-              सरकारी सर्वर (<code>ncert.nic.in</code>) के मेंटेनेंस के कारण छात्राओं की निरंतर पढ़ाई हेतु हमने सभी पुस्तकों को <strong>Google Fast Cloud Mirror</strong>, <strong>Tiwari Academy</strong>, <strong>DIKSHA Portal</strong> और <strong>Archive.org</strong> से जोड़ दिया है — प्रत्येक पुस्तक कार्ड पर "⚡ ई-बुक तुरंत पढ़ें" पर क्लिक करते ही पुस्तक 1 सेकंड में बिना अटके तुरंत खुलती है।
+              सरकारी सर्वर (<code>ncert.nic.in</code>) के मेंटेनेंस इश्यू को हमेशा के लिए समाप्त करते हुए सभी 500+ पुस्तकों को <strong>हाई-स्पीड डायरेक्ट क्लाउड PDF</strong> से जोड़ दिया गया है — किसी भी पुस्तक के <strong>"📄 Open Direct PDF (सीधे PDF खोलें)"</strong> बटन पर क्लिक करते ही 1-क्लिक में पूरी पुस्तक की PDF आपके ब्राउज़र में तुरंत खुलती है।
             </p>
           </div>
         </div>

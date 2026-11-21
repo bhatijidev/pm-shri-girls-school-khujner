@@ -14,7 +14,7 @@ export default function CategoryFilter({ categories, activeCategoryId, onSelectC
   };
 
   return (
-    <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none">
+    <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none" data-scrollbar="none">
       {/* All Option */}
       <button
         onClick={() => onSelectCategory('')}

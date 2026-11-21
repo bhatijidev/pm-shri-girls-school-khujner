@@ -204,7 +204,7 @@ export default function NoticesPage() {
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none">
+          <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none" data-scrollbar="none">
             {categories.map((c) => {
               const active = selectedCategory === c.value;
               return (

@@ -216,7 +216,7 @@ export default function Facilities() {
         </div>
 
         {/* 1. Interactive Switcher Tabs (Aligned cleanly like E-Library, no cutoff on left on any screen) */}
-        <div className="flex items-center space-x-2.5 overflow-x-auto pb-3 px-2 sm:px-4 scrollbar-none scroll-smooth">
+        <div className="flex items-center space-x-2 overflow-x-auto pb-2 scrollbar-none" data-scrollbar="none">
           {facilities.map((f, idx) => {
             const Icon = f.icon;
             const isActive = activeIndex === idx;
@@ -226,7 +226,7 @@ export default function Facilities() {
                 onClick={() => handleTabClick(idx)}
                 className={`flex items-center space-x-2 px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all duration-200 border flex-shrink-0 ${
                   isActive
-                    ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white border-transparent shadow-lg shadow-orange-500/25'
+                    ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white border-transparent shadow-md shadow-orange-500/25'
                     : 'bg-slate-900/90 text-slate-300 border-white/10 hover:border-brand-orange/50 hover:text-white hover:bg-slate-800'
                 }`}
               >
