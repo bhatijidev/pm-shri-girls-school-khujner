@@ -166,6 +166,9 @@ export const bookService = {
   getCategories: async () => {
     return cachedGet('/books/categories', {}, 120000);
   },
+  getFilterMeta: async (params = {}) => {
+    return cachedGet('/books/filter-meta', params, 60000);
+  },
   getById: async (id) => {
     return cachedGet(`/books/${id}`, {}, 60000);
   },

@@ -10,9 +10,10 @@ export const getAllBooks = (req, res) => {
     const categoryId = req.query.category;
     const classGrade = req.query.class;
     const subject = req.query.subject;
+    const language = req.query.language;
     const search = req.query.search;
 
-    const cacheKey = `books:list:${page}:${limit}:${categoryId || ''}:${classGrade || ''}:${subject || ''}:${search || ''}`;
+    const cacheKey = `books:list:${page}:${limit}:${categoryId || ''}:${classGrade || ''}:${subject || ''}:${language || ''}:${search || ''}`;
     const cached = apiCache.get(cacheKey);
     if (cached) {
       res.setHeader('Cache-Control', 'public, max-age=30, stale-while-revalidate=60');
@@ -58,8 +59,13 @@ export const getAllBooks = (req, res) => {
     }
 
     if (subject) {
-      whereClause += ' AND b.subject LIKE ?';
-      params.push(`%${subject}%`);
+      whereClause += ' AND b.subject = ?';
+      params.push(subject);
+    }
+
+    if (language) {
+      whereClause += ' AND b.language = ?';
+      params.push(language);
     }
 
     if (search) {
@@ -514,6 +520,68 @@ export const getBookPdf = async (req, res) => {
     return res.redirect(302, fallbackUrl);
   } catch (err) {
     console.error('Book PDF redirect error:', err);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
+// GET /api/books/filter-meta — Returns dynamic languages and subjects based on active filters
+export const getFilterMetadata = (req, res) => {
+  try {
+    const selectedClass = req.query.class;
+    const selectedCategory = req.query.category;
+    const selectedLanguage = req.query.language;
+
+    let whereClause = 'WHERE is_active = 1';
+    const params = [];
+
+    if (selectedCategory) {
+      whereClause += ' AND category_id = ?';
+      params.push(selectedCategory);
+    }
+
+    // 1. Languages with counts
+    const languages = db.prepare(`
+      SELECT language, COUNT(*) as count
+      FROM books
+      ${whereClause}
+      AND language IS NOT NULL AND language != ''
+      GROUP BY language
+      ORDER BY count DESC
+    `).all(...params);
+
+    // 2. Subjects narrowed down by selectedClass & selectedLanguage
+    let subWhere = whereClause;
+    const subParams = [...params];
+    if (selectedClass) {
+      if (selectedClass === 'All Ages') {
+        subWhere += " AND (class_grade = 'All Ages' OR class_grade LIKE '%Competitive%' OR class_grade LIKE '%All%')";
+      } else {
+        subWhere += ' AND (class_grade = ? OR class_grade LIKE ?)';
+        subParams.push(selectedClass, `${selectedClass}-%`);
+      }
+    }
+    if (selectedLanguage) {
+      subWhere += ' AND language = ?';
+      subParams.push(selectedLanguage);
+    }
+
+    const subjects = db.prepare(`
+      SELECT subject, COUNT(*) as count
+      FROM books
+      ${subWhere}
+      AND subject IS NOT NULL AND subject != ''
+      GROUP BY subject
+      ORDER BY count DESC, subject ASC
+    `).all(...subParams);
+
+    // Cache response for 60 seconds
+    res.setHeader('Cache-Control', 'public, max-age=60');
+    return res.json({
+      success: true,
+      data: { languages, subjects }
+    });
+  } catch (error) {
+    console.error('Filter metadata error:', error);
     return res.status(500).json({ success: false, message: 'Server error' });
   }
 };

@@ -10,7 +10,8 @@ import {
   getDashboardStats,
   getPublicStats,
   recordBookView,
-  getBookPdf
+  getBookPdf,
+  getFilterMetadata
 } from '../controllers/bookController.js';
 import authMiddleware from '../middleware/auth.js';
 
@@ -18,6 +19,7 @@ const router = Router();
 
 // Static routes MUST come before :id param routes
 router.get('/public-stats', getPublicStats);
+router.get('/filter-meta', getFilterMetadata);
 router.get('/categories', getCategories);
 router.get('/stats', getDashboardStats);
 router.get('/by-category/:slug', getBooksByCategory);

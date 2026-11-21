@@ -1,42 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SEO from '../components/common/SEO';
 import { useBooks } from '../hooks/useBooks';
+import { bookService } from '../services/api';
 import BookCard from '../components/library/BookCard';
 import CategoryFilter from '../components/library/CategoryFilter';
 import Loading from '../components/ui/Loading';
-import { BookOpen, Search, ShieldCheck, ChevronLeft, ChevronRight, Sparkles, Filter, Layers, AlertCircle } from 'lucide-react';
+import { 
+  BookOpen, Search, ShieldCheck, ChevronLeft, ChevronRight, Sparkles, 
+  Filter, Layers, AlertCircle, Languages, GraduationCap, X, RotateCcw 
+} from 'lucide-react';
 
 export default function LibraryPage() {
   const [activeCategoryId, setActiveCategoryId] = useState('');
   const [selectedClass, setSelectedClass] = useState('');
+  const [selectedLanguage, setSelectedLanguage] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterMeta, setFilterMeta] = useState({ languages: [], subjects: [] });
 
   const { books, categories, pagination, loading, error, params, setParams } = useBooks({
     page: 1,
     limit: 24,
     category: '',
     class: '',
+    language: '',
+    subject: '',
     search: ''
   });
 
+  // Fetch dynamic subjects and languages based on active class & category selection
+  useEffect(() => {
+    let isMounted = true;
+    const loadMeta = async () => {
+      try {
+        const res = await bookService.getFilterMeta({
+          class: selectedClass,
+          category: activeCategoryId,
+          language: selectedLanguage
+        });
+        if (isMounted && res.success && res.data) {
+          setFilterMeta(res.data);
+        }
+      } catch (e) {
+        console.error('Failed to load filter metadata', e);
+      }
+    };
+    loadMeta();
+    return () => { isMounted = false; };
+  }, [selectedClass, activeCategoryId, selectedLanguage]);
+
   const handleCategorySelect = (catId) => {
     setActiveCategoryId(catId);
+    setSelectedSubject('');
     setParams((prev) => ({
       ...prev,
       page: 1,
-      category: catId
+      category: catId,
+      subject: ''
     }));
     window.scrollTo({ top: 250, behavior: 'smooth' });
   };
 
   const handleClassChange = (cls) => {
     setSelectedClass(cls);
+    setSelectedSubject('');
     setParams((prev) => ({
       ...prev,
       page: 1,
-      class: cls
+      class: cls,
+      subject: ''
     }));
     window.scrollTo({ top: 250, behavior: 'smooth' });
+  };
+
+  const handleLanguageChange = (lang) => {
+    setSelectedLanguage(lang);
+    setParams((prev) => ({
+      ...prev,
+      page: 1,
+      language: lang
+    }));
+  };
+
+  const handleSubjectChange = (subj) => {
+    setSelectedSubject(subj);
+    setParams((prev) => ({
+      ...prev,
+      page: 1,
+      subject: subj
+    }));
   };
 
   const handleSearch = (e) => {
@@ -46,6 +98,23 @@ export default function LibraryPage() {
       page: 1,
       search: searchTerm
     }));
+  };
+
+  const handleResetAll = () => {
+    setActiveCategoryId('');
+    setSelectedClass('');
+    setSelectedLanguage('');
+    setSelectedSubject('');
+    setSearchTerm('');
+    setParams({
+      page: 1,
+      limit: 24,
+      category: '',
+      class: '',
+      language: '',
+      subject: '',
+      search: ''
+    });
   };
 
   const handlePageChange = (newPage) => {
@@ -72,6 +141,10 @@ export default function LibraryPage() {
     { label: 'All Ages / Competitive', value: 'All Ages' }
   ];
 
+  const hasActiveFilters = Boolean(
+    selectedClass || selectedLanguage || selectedSubject || activeCategoryId || searchTerm
+  );
+
   return (
     <div className="py-12 bg-brand-cream min-h-screen">
       <SEO
@@ -80,7 +153,7 @@ export default function LibraryPage() {
         keywords="NCERT books download, Class 1 to 12 NCERT PDF, MP Board ebooks, PM SHRI Khujner library, digital library Rajgarh"
         canonicalPath="/library"
       />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         
         {/* Page Hero Banner */}
         <div className="gradient-hero-bg text-white rounded-3xl p-8 sm:p-12 shadow-xl relative overflow-hidden">
@@ -123,7 +196,7 @@ export default function LibraryPage() {
         </div>
 
         {/* Filter Bar & Search */}
-        <div className="space-y-4">
+        <div className="space-y-3.5">
           {/* Categories Horizontal Tabs */}
           <CategoryFilter
             categories={categories}
@@ -153,13 +226,13 @@ export default function LibraryPage() {
             </form>
 
             {/* Class Grade Select */}
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2 flex-shrink-0">
               <Filter className="w-4 h-4 text-brand-orange" />
               <span className="text-xs font-semibold text-slate-700 hidden sm:inline">Select Grade:</span>
               <select
                 value={selectedClass}
                 onChange={(e) => handleClassChange(e.target.value)}
-                className="px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-orange shadow-sm"
+                className="px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-800 bg-white focus:outline-none focus:ring-2 focus:ring-brand-orange shadow-sm cursor-pointer"
               >
                 {classFilters.map((cls) => (
                   <option key={cls.value} value={cls.value}>
@@ -174,8 +247,180 @@ export default function LibraryPage() {
               <span>Showing: </span>
               <strong className="text-slate-900">{pagination.total || books.length}</strong> books
             </div>
-
           </div>
+
+          {/* Language / Medium Filter Bar */}
+          <div className="bg-white rounded-2xl p-3 shadow-sm border border-orange-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <div className="flex items-center space-x-2 text-xs font-bold text-slate-800 flex-shrink-0">
+              <Languages className="w-4 h-4 text-brand-orange" />
+              <span>Language / माध्यम:</span>
+            </div>
+
+            <div className="flex items-center space-x-2 overflow-x-auto pb-1 sm:pb-0 scrollbar-none" data-scrollbar="none">
+              <button
+                onClick={() => handleLanguageChange('')}
+                className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  selectedLanguage === ''
+                    ? 'bg-slate-900 text-white shadow-sm'
+                    : 'bg-slate-50 text-slate-600 hover:bg-orange-50 hover:text-brand-orange border border-slate-200/80'
+                }`}
+              >
+                All Languages (सभी)
+              </button>
+
+              <button
+                onClick={() => handleLanguageChange('Hindi')}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  selectedLanguage === 'Hindi'
+                    ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white shadow-md shadow-orange-500/20'
+                    : 'bg-slate-50 text-slate-700 hover:bg-orange-50 hover:text-brand-orange border border-slate-200/80'
+                }`}
+              >
+                <span>🇮🇳 Hindi (हिंदी)</span>
+              </button>
+
+              <button
+                onClick={() => handleLanguageChange('English')}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  selectedLanguage === 'English'
+                    ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white shadow-md shadow-orange-500/20'
+                    : 'bg-slate-50 text-slate-700 hover:bg-orange-50 hover:text-brand-orange border border-slate-200/80'
+                }`}
+              >
+                <span>🇬🇧 English (अंग्रेजी)</span>
+              </button>
+
+              <button
+                onClick={() => handleLanguageChange('Sanskrit')}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  selectedLanguage === 'Sanskrit'
+                    ? 'bg-gradient-to-r from-amber-600 to-yellow-700 text-white shadow-md shadow-amber-500/20'
+                    : 'bg-slate-50 text-slate-700 hover:bg-amber-50 hover:text-amber-800 border border-slate-200/80'
+                }`}
+              >
+                <span>🕉️ Sanskrit (संस्कृत)</span>
+              </button>
+
+              <button
+                onClick={() => handleLanguageChange('Urdu')}
+                className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                  selectedLanguage === 'Urdu'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-700 text-white shadow-md shadow-emerald-500/20'
+                    : 'bg-slate-50 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800 border border-slate-200/80'
+                }`}
+              >
+                <span>📜 Urdu (उर्दू)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Dynamic Subject Filter Bar */}
+          {filterMeta.subjects && filterMeta.subjects.length > 0 && (
+            <div className="bg-white rounded-2xl p-3.5 shadow-sm border border-orange-100 space-y-2.5">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center space-x-1.5 font-bold text-slate-800">
+                  <GraduationCap className="w-4 h-4 text-brand-orange" />
+                  <span>
+                    {selectedClass ? `${selectedClass} के विषय (Subjects):` : 'विषय फ़िल्टर (Subjects):'}
+                  </span>
+                </div>
+                {selectedSubject && (
+                  <button
+                    onClick={() => handleSubjectChange('')}
+                    className="text-[11px] font-semibold text-brand-orange hover:underline flex items-center space-x-1"
+                  >
+                    <span>Clear Subject (सभी विषय देखें)</span>
+                  </button>
+                )}
+              </div>
+
+              {/* Horizontal Scrollable Subject Pills */}
+              <div className="flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-none" data-scrollbar="none">
+                <button
+                  onClick={() => handleSubjectChange('')}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                    selectedSubject === ''
+                      ? 'bg-slate-900 text-white shadow-sm'
+                      : 'bg-slate-50 text-slate-600 hover:bg-orange-50 hover:text-brand-orange border border-slate-200/80'
+                  }`}
+                >
+                  All Subjects (सभी)
+                </button>
+
+                {filterMeta.subjects.map((s) => {
+                  const isSelected = selectedSubject === s.subject;
+                  return (
+                    <button
+                      key={s.subject}
+                      onClick={() => handleSubjectChange(isSelected ? '' : s.subject)}
+                      className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+                        isSelected
+                          ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white shadow-md shadow-orange-500/20'
+                          : 'bg-slate-50 text-slate-700 hover:bg-orange-50 hover:text-brand-orange border border-slate-200/80'
+                      }`}
+                    >
+                      <span>{s.subject}</span>
+                      <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-semibold ${
+                        isSelected ? 'bg-white/20 text-white' : 'bg-slate-200/80 text-slate-600'
+                      }`}>
+                        {s.count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Active Filter Tags */}
+          {hasActiveFilters && (
+            <div className="flex items-center flex-wrap gap-2 pt-1 text-xs">
+              <span className="text-slate-400 font-medium">सक्रिय फ़िल्टर:</span>
+
+              {activeCategoryId && (
+                <span className="inline-flex items-center space-x-1.5 bg-orange-100 text-orange-950 px-2.5 py-1 rounded-xl font-bold">
+                  <span>श्रेणी: {categories.find(c => String(c.id) === String(activeCategoryId))?.name || 'Category'}</span>
+                  <button onClick={() => handleCategorySelect('')} className="hover:text-red-700" title="Remove category"><X className="w-3.5 h-3.5" /></button>
+                </span>
+              )}
+
+              {selectedClass && (
+                <span className="inline-flex items-center space-x-1.5 bg-blue-100 text-blue-900 px-2.5 py-1 rounded-xl font-bold">
+                  <span>कक्षा: {selectedClass}</span>
+                  <button onClick={() => handleClassChange('')} className="hover:text-red-700" title="Remove class"><X className="w-3.5 h-3.5" /></button>
+                </span>
+              )}
+
+              {selectedLanguage && (
+                <span className="inline-flex items-center space-x-1.5 bg-amber-100 text-amber-950 px-2.5 py-1 rounded-xl font-bold">
+                  <span>माध्यम: {selectedLanguage}</span>
+                  <button onClick={() => handleLanguageChange('')} className="hover:text-red-700" title="Remove language"><X className="w-3.5 h-3.5" /></button>
+                </span>
+              )}
+
+              {selectedSubject && (
+                <span className="inline-flex items-center space-x-1.5 bg-purple-100 text-purple-950 px-2.5 py-1 rounded-xl font-bold">
+                  <span>विषय: {selectedSubject}</span>
+                  <button onClick={() => handleSubjectChange('')} className="hover:text-red-700" title="Remove subject"><X className="w-3.5 h-3.5" /></button>
+                </span>
+              )}
+
+              {searchTerm && (
+                <span className="inline-flex items-center space-x-1.5 bg-slate-200 text-slate-800 px-2.5 py-1 rounded-xl font-bold">
+                  <span>खोज: "{searchTerm}"</span>
+                  <button onClick={() => { setSearchTerm(''); setParams(p => ({ ...p, page: 1, search: '' })); }} className="hover:text-red-700" title="Clear search"><X className="w-3.5 h-3.5" /></button>
+                </span>
+              )}
+
+              <button
+                onClick={handleResetAll}
+                className="inline-flex items-center space-x-1 text-brand-orange hover:text-brand-red font-bold text-xs bg-orange-50 px-2.5 py-1 rounded-xl border border-orange-200 transition-colors"
+              >
+                <RotateCcw className="w-3 h-3" />
+                <span>Reset All (फ़िल्टर साफ़ करें)</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Books Grid */}
@@ -187,22 +432,20 @@ export default function LibraryPage() {
             <p className="text-sm mt-1">{error}</p>
           </div>
         ) : books.length === 0 ? (
-          <div className="p-12 text-center bg-white border border-slate-200 rounded-3xl space-y-3">
-            <BookOpen className="w-12 h-12 text-slate-300 mx-auto" />
-            <h3 className="font-heading font-bold text-lg text-slate-700">No books found</h3>
-            <p className="text-sm text-slate-500">
-              Try adjusting your category filter, grade, or search keyword.
-            </p>
+          <div className="p-12 text-center bg-white border border-slate-200 rounded-3xl space-y-4">
+            <BookOpen className="w-14 h-14 text-slate-300 mx-auto" />
+            <div className="space-y-1">
+              <h3 className="font-heading font-bold text-lg text-slate-800">कोई पुस्तक नहीं मिली (No books found)</h3>
+              <p className="text-sm text-slate-500 max-w-md mx-auto">
+                चुने गए फ़िल्टर (कक्षा / माध्यम / विषय) के अनुसार कोई पुस्तक नहीं मिली। कृपया फ़िल्टर बदलें या सभी देखें।
+              </p>
+            </div>
             <button
-              onClick={() => {
-                setActiveCategoryId('');
-                setSelectedClass('');
-                setSearchTerm('');
-                setParams({ page: 1, limit: 16, category: '', class: '', search: '' });
-              }}
-              className="text-xs font-bold text-brand-orange hover:underline"
+              onClick={handleResetAll}
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-brand-orange to-brand-red text-white text-xs font-bold px-4 py-2 rounded-xl shadow-md shadow-orange-500/20 hover:opacity-95 transition-all"
             >
-              Reset All Filters
+              <RotateCcw className="w-3.5 h-3.5" />
+              <span>सभी फ़िल्टर साफ़ करें (Reset Filters)</span>
             </button>
           </div>
         ) : (
@@ -219,7 +462,8 @@ export default function LibraryPage() {
             <button
               onClick={() => handlePageChange(pagination.page - 1)}
               disabled={pagination.page <= 1}
-              className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50"
+              className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+              aria-label="Previous Page"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -229,7 +473,8 @@ export default function LibraryPage() {
             <button
               onClick={() => handlePageChange(pagination.page + 1)}
               disabled={pagination.page >= pagination.totalPages}
-              className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50"
+              className="p-2.5 rounded-xl bg-white border border-slate-200 text-slate-600 disabled:opacity-40 disabled:cursor-not-allowed hover:bg-slate-50 transition-colors"
+              aria-label="Next Page"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
