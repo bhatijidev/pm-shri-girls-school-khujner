@@ -215,8 +215,8 @@ export default function Facilities() {
           </div>
         </div>
 
-        {/* 1. Interactive Switcher Tabs (Horizontal single row like E-Library, no cutoff on left) */}
-        <div className="flex items-center lg:justify-center space-x-2 overflow-x-auto pb-2 scrollbar-none px-1">
+        {/* 1. Interactive Switcher Tabs (Aligned cleanly like E-Library, no cutoff on left on any screen) */}
+        <div className="flex items-center space-x-2.5 overflow-x-auto pb-3 px-2 sm:px-4 scrollbar-none scroll-smooth">
           {facilities.map((f, idx) => {
             const Icon = f.icon;
             const isActive = activeIndex === idx;

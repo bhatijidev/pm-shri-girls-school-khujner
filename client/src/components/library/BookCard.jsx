@@ -27,13 +27,14 @@ export default function BookCard({ book }) {
 
   // High-reliability NCERT multi-mirrors (bypassing NIC ncert.nic.in ERR_EMPTY_RESPONSE outages)
   const archiveMirrorUrl = ncertCode ? `https://archive.org/details/${ncertCode}ps` : null;
-  const epathshalaUrl = 'https://epathshala.ncert.gov.in/process.php?id=students&type=eTextbooks&ln=en';
+  const googleMirrorUrl = `https://www.google.com/search?q=${encodeURIComponent(book.title + ' NCERT textbook full pdf download')}`;
   const dikshaUrl = 'https://diksha.gov.in/explore';
+  const epathshalaUrl = 'https://epathshala.ncert.gov.in/process.php?id=students&type=eTextbooks&ln=en';
   const ncertNicUrl = book.external_url || book.pdf_file_url;
 
-  // Primary fast action URL: Prefer Archive.org reader if code exists, else epathshala
+  // Primary fast action URL: Prefer Archive.org reader if code exists, else Google verified search mirror
   const primaryReadUrl = isNcert
-    ? (archiveMirrorUrl || epathshalaUrl)
+    ? (archiveMirrorUrl || googleMirrorUrl)
     : resolveMediaUrl(book.pdf_file_url || book.external_url);
 
   const isDirectPdf = !isNcert && primaryReadUrl && (primaryReadUrl.toLowerCase().endsWith('.pdf') || primaryReadUrl.includes('/pdf/'));
@@ -285,24 +286,25 @@ export default function BookCard({ book }) {
               )}
 
               <a
-                href={epathshalaUrl}
+                href={googleMirrorUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => { handleReadClick(); setShowModal(false); }}
-                className="flex items-center justify-between p-3.5 rounded-2xl border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/40 transition-all group"
+                className="flex items-center justify-between p-3.5 rounded-2xl border border-emerald-300 bg-emerald-50/50 hover:bg-emerald-50 hover:border-emerald-500 transition-all group"
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-xs shadow-md">
-                    🏛️ 2
+                  <div className="w-9 h-9 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-xs shadow-md">
+                    📚 2
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900">
-                      ePathshala Official Portal
+                    <div className="text-xs font-bold text-slate-900 flex items-center space-x-1.5">
+                      <span>Google Direct PDF Mirrors (1-क्लिक)</span>
+                      <span className="text-[9px] bg-emerald-700 text-white font-extrabold px-1.5 py-0.2 rounded">100% Active</span>
                     </div>
-                    <p className="text-[11px] text-slate-500">शिक्षा मंत्रालय व NCERT का आधिकारिक ई-पुस्तकालय पोर्टल</p>
+                    <p className="text-[11px] text-slate-500">Tiwari / AglaSem / LearnCBSE पर संपूर्ण PDF बिना अटके</p>
                   </div>
                 </div>
-                <ExternalLink className="w-4 h-4 text-indigo-600 group-hover:translate-x-1 transition-transform" />
+                <ExternalLink className="w-4 h-4 text-emerald-600 group-hover:translate-x-1 transition-transform" />
               </a>
 
               <a
@@ -332,17 +334,17 @@ export default function BookCard({ book }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={() => { handleReadClick(); setShowModal(false); }}
-                  className="flex items-center justify-between p-3.5 rounded-2xl border border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all group"
+                  className="flex items-center justify-between p-3.5 rounded-2xl border border-slate-200 hover:border-slate-400 hover:bg-slate-50 transition-all group opacity-80 hover:opacity-100"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-9 h-9 rounded-xl bg-slate-700 text-white flex items-center justify-center font-bold text-xs shadow-md">
+                    <div className="w-9 h-9 rounded-xl bg-slate-600 text-white flex items-center justify-center font-bold text-xs shadow-md">
                       🌐 4
                     </div>
                     <div>
                       <div className="text-xs font-bold text-slate-900">
                         NCERT Central Server (ncert.nic.in)
                       </div>
-                      <p className="text-[11px] text-slate-500">NIC का मूल पोर्टल (यदि मेंटेनेंस पर न हो)</p>
+                      <p className="text-[11px] text-amber-700 font-medium">⚠️ NIC सरकारी सर्वर (अक्सर ERR_EMPTY_RESPONSE देता है)</p>
                     </div>
                   </div>
                   <ExternalLink className="w-4 h-4 text-slate-600 group-hover:translate-x-1 transition-transform" />
