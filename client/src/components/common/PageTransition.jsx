@@ -1,29 +1,25 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 
-// Silky-smooth cubic bezier easing (Apple iOS / macOS fluid feel)
+// Ultra-fast GPU-accelerated page transition (no CPU-heavy blur filters)
 const pageVariants = {
   initial: {
     opacity: 0,
-    y: 10,
-    filter: 'blur(2px)'
+    y: 6
   },
   animate: {
     opacity: 1,
     y: 0,
-    filter: 'blur(0px)',
     transition: {
-      duration: 0.28,
-      ease: [0.22, 1, 0.36, 1]
+      duration: 0.18,
+      ease: [0.25, 0.1, 0.25, 1]
     }
   },
   exit: {
     opacity: 0,
-    y: -8,
-    filter: 'blur(2px)',
     transition: {
-      duration: 0.18,
-      ease: [0.22, 1, 0.36, 1]
+      duration: 0.12,
+      ease: 'easeOut'
     }
   }
 };
@@ -40,6 +36,7 @@ export default function PageTransition({ children }) {
       initial="initial"
       animate="animate"
       exit="exit"
+      style={{ willChange: 'opacity, transform' }}
       className="w-full flex-grow flex flex-col"
     >
       {children}
