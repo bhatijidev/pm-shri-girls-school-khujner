@@ -49,7 +49,7 @@ export default function SocialSidebar() {
   return (
     <aside
       aria-label="Social media quick links"
-      className="fixed left-0 top-1/2 -translate-y-1/2 z-40 flex flex-col items-start space-y-2 pointer-events-auto select-none"
+      className="hidden md:flex fixed left-0 top-1/2 -translate-y-1/2 z-40 flex-col items-start space-y-2 pointer-events-auto select-none"
     >
       {socialLinks.map((item, idx) => {
         const Icon = item.icon;

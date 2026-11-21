@@ -215,8 +215,8 @@ export default function Facilities() {
           </div>
         </div>
 
-        {/* 1. Mobile & Desktop Interactive Switcher Tabs */}
-        <div className="flex items-center justify-start sm:justify-center space-x-2 overflow-x-auto pb-2 scrollbar-none px-2">
+        {/* 1. Mobile-friendly & Desktop Interactive Switcher Tabs (No horizontal cutoffs or ugly scrollbars) */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:flex-wrap lg:items-center lg:justify-center gap-2 sm:gap-2.5 px-1">
           {facilities.map((f, idx) => {
             const Icon = f.icon;
             const isActive = activeIndex === idx;
@@ -224,15 +224,15 @@ export default function Facilities() {
               <button
                 key={f.id}
                 onClick={() => handleTabClick(idx)}
-                className={`flex items-center space-x-2 px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all duration-200 border ${
+                className={`flex items-center justify-center space-x-1.5 sm:space-x-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl text-xs font-bold transition-all duration-200 border ${
                   isActive
-                    ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white border-transparent shadow-lg shadow-orange-500/25 scale-105'
-                    : 'bg-slate-900/90 text-slate-300 border-white/10 hover:border-brand-orange/50 hover:text-white'
+                    ? 'bg-gradient-to-r from-brand-orange to-brand-red text-white border-transparent shadow-lg shadow-orange-500/25 ring-2 ring-orange-400/40 scale-[1.02]'
+                    : 'bg-slate-900/90 text-slate-300 border-white/10 hover:border-brand-orange/50 hover:text-white hover:bg-slate-800'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-orange-400'}`} />
-                <span>{f.shortTitle}</span>
-                <span className={`text-[10px] font-hindi ${isActive ? 'text-white/80' : 'text-slate-500'}`}>
+                <Icon className={`w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0 ${isActive ? 'text-white' : 'text-orange-400'}`} />
+                <span className="truncate">{f.shortTitle}</span>
+                <span className={`text-[10px] font-hindi hidden xs:inline sm:inline ${isActive ? 'text-white/85' : 'text-slate-500'}`}>
                   ({f.shortHindi})
                 </span>
               </button>
