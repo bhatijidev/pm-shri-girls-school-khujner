@@ -1,11 +1,21 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Explicitly load .env from server directory
+dotenv.config({ path: path.join(__dirname, '.env') });
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = 'pmshri-khujner-secret-key-2024-girls-school';
+}
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import compression from 'compression';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 import { generalLimiter, mutationLimiter } from './middleware/rateLimit.js';
 import authRoutes from './routes/auth.js';
@@ -13,9 +23,6 @@ import noticeRoutes from './routes/notices.js';
 import bookRoutes from './routes/books.js';
 import uploadRoutes from './routes/upload.js';
 import contactRoutes from './routes/contact.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;

@@ -36,3 +36,15 @@ export const mutationLimiter = rateLimit({
     message: 'Write operation limit reached. Please try again later.'
   }
 });
+
+// Strict Contact Form Rate Limiter: Maximum 5 submissions per 15 minutes per IP
+export const contactLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes window
+  max: 5, // Max 5 submissions per IP in 15 mins
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: {
+    success: false,
+    message: 'Aapne is device se kaafi anurodh bhej diye hain. Kripya 15 minute baad prayas karein ya seedhe vidyalaya helpline (+91 95759 62662) par call karein.'
+  }
+});

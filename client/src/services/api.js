@@ -239,12 +239,20 @@ export const contactService = {
     const res = await api.post('/contact', data);
     return res.data;
   },
+  createManualInquiry: async (data) => {
+    const res = await api.post('/contact/manual', data);
+    return res.data;
+  },
   getInquiries: async (params = {}) => {
     const res = await api.get('/contact', { params });
     return res.data;
   },
   updateInquiryStatus: async (id, status, admin_notes) => {
     const res = await api.patch(`/contact/${id}`, { status, admin_notes });
+    return res.data;
+  },
+  updateInquiry: async (id, updateData) => {
+    const res = await api.patch(`/contact/${id}`, updateData);
     return res.data;
   },
   deleteInquiry: async (id) => {

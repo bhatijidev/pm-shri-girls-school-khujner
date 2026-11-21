@@ -28,15 +28,49 @@ export default function ContactPage() {
     phone: '',
     email: '',
     inquiryType: 'Admission in Class 9 / 10 / 11 / 12',
-    message: ''
+    message: '',
+    website_url: '' // Honeypot anti-bot field
   });
   const [submitted, setSubmitted] = useState(false);
   const [ticketId, setTicketId] = useState('');
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  const [cooldownSec, setCooldownSec] = useState(0);
+
+  // Check cooldown on mount
+  React.useEffect(() => {
+    const lastSub = localStorage.getItem('pmshri_last_inquiry_time');
+    if (lastSub) {
+      const elapsed = Math.floor((Date.now() - parseInt(lastSub, 10)) / 1000);
+      if (elapsed < 60) {
+        setCooldownSec(60 - elapsed);
+      }
+    }
+  }, []);
+
+  // Cooldown countdown timer
+  React.useEffect(() => {
+    if (cooldownSec <= 0) return;
+    const timer = setInterval(() => {
+      setCooldownSec((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [cooldownSec]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (cooldownSec > 0) {
+      setErrorMsg(`कृपया नया फॉर्म भेजने से पहले ${cooldownSec} सेकंड प्रतीक्षा करें।`);
+      return;
+    }
+
     setLoading(true);
     setErrorMsg('');
     try {
@@ -44,30 +78,39 @@ export default function ContactPage() {
       if (res.success && res.data) {
         setTicketId(res.data.ticket_id);
         setSubmitted(true);
+        localStorage.setItem('pmshri_last_inquiry_time', Date.now().toString());
+        setCooldownSec(60);
       } else {
-        const fallbackTicket = 'PMSHRI-KHJ-' + Math.floor(100000 + Math.random() * 900000);
-        setTicketId(fallbackTicket);
-        setSubmitted(true);
+        setErrorMsg(res.message || 'पूछताछ दर्ज नहीं हो सकी। कृपया पुनः प्रयास करें।');
       }
     } catch (err) {
       console.error('Inquiry submission error:', err);
-      const fallbackTicket = 'PMSHRI-KHJ-' + Math.floor(100000 + Math.random() * 900000);
-      setTicketId(fallbackTicket);
-      setSubmitted(true);
+      const serverMsg = err.response?.data?.message;
+      if (serverMsg) {
+        setErrorMsg(serverMsg);
+      } else {
+        setErrorMsg('सर्वर से संपर्क नहीं हो पाया। कृपया इंटरनेट चेक करें या सीधे विद्यालय कार्यालय (95759 62662) पर कॉल करें।');
+      }
     } finally {
       setLoading(false);
     }
   };
 
   const handleReset = () => {
+    if (cooldownSec > 0) {
+      setErrorMsg(`कृपया अगला फॉर्म भेजने से पहले ${cooldownSec} सेकंड प्रतीक्षा करें।`);
+      return;
+    }
     setFormData({
       name: '',
       phone: '',
       email: '',
       inquiryType: 'Admission in Class 9 / 10 / 11 / 12',
-      message: ''
+      message: '',
+      website_url: ''
     });
     setSubmitted(false);
+    setErrorMsg('');
   };
 
   const faqs = [
@@ -324,6 +367,37 @@ export default function ContactPage() {
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Honeypot field for anti-bot spam protection */}
+                <input
+                  type="text"
+                  name="website_url"
+                  value={formData.website_url}
+                  onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
+                  style={{ display: 'none', position: 'absolute', left: '-9999px', opacity: 0 }}
+                  tabIndex="-1"
+                  autoComplete="off"
+                  aria-hidden="true"
+                />
+
+                {/* Error message alert */}
+                {errorMsg && (
+                  <div className="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start space-x-2.5 animate-shake">
+                    <AlertTriangle className="w-4 h-4 text-rose-600 flex-shrink-0 mt-0.5" />
+                    <div className="space-y-0.5">
+                      <span className="font-bold">ध्यान दें (Alert):</span>
+                      <p className="leading-relaxed">{errorMsg}</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* Cooldown notification if active */}
+                {cooldownSec > 0 && (
+                  <div className="p-3 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center space-x-2">
+                    <Clock className="w-4 h-4 text-amber-600 flex-shrink-0 animate-spin" />
+                    <span>स्पैम सुरक्षा: अगला फॉर्म भेजने के लिए <strong>{cooldownSec}s</strong> प्रतीक्षा करें।</span>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold text-slate-700 mb-1.5">
@@ -405,11 +479,17 @@ export default function ContactPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    disabled={loading}
-                    className="w-full py-3.5 bg-gradient-to-r from-brand-orange to-brand-red hover:from-brand-red hover:to-brand-orange text-white font-bold rounded-xl shadow-md shadow-orange-500/20 hover:shadow-lg transition-all flex items-center justify-center space-x-2 text-sm disabled:opacity-60"
+                    disabled={loading || cooldownSec > 0}
+                    className="w-full py-3.5 bg-gradient-to-r from-brand-orange to-brand-red hover:from-brand-red hover:to-brand-orange text-white font-bold rounded-xl shadow-md shadow-orange-500/20 hover:shadow-lg transition-all flex items-center justify-center space-x-2 text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <Send className={`w-4 h-4 ${loading ? 'animate-pulse' : ''}`} />
-                    <span>{loading ? 'Submitting to Principal Office...' : 'Submit Inquiry to Principal Office'}</span>
+                    <span>
+                      {loading
+                        ? 'Submitting to Principal Office...'
+                        : cooldownSec > 0
+                        ? `कृपया ${cooldownSec}s प्रतीक्षा करें`
+                        : 'Submit Inquiry to Principal Office'}
+                    </span>
                   </button>
                 </div>
               </form>

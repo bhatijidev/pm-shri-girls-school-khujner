@@ -43,6 +43,7 @@ export const login = (req, res) => {
     db.prepare('UPDATE admin_users SET last_login = datetime(\'now\') WHERE id = ?').run(user.id);
 
     // Generate JWT token
+    const jwtSecret = process.env.JWT_SECRET || 'pmshri-khujner-secret-key-2024-girls-school';
     const token = jwt.sign(
       {
         id: user.id,
@@ -50,7 +51,7 @@ export const login = (req, res) => {
         role: user.role,
         full_name: user.full_name
       },
-      process.env.JWT_SECRET,
+      jwtSecret,
       { expiresIn: process.env.JWT_EXPIRES_IN || '8h' }
     );
 
