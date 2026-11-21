@@ -4,7 +4,7 @@ import { useBooks } from '../hooks/useBooks';
 import BookCard from '../components/library/BookCard';
 import CategoryFilter from '../components/library/CategoryFilter';
 import Loading from '../components/ui/Loading';
-import { BookOpen, Search, ShieldCheck, ChevronLeft, ChevronRight, Sparkles, Filter, Layers } from 'lucide-react';
+import { BookOpen, Search, ShieldCheck, ChevronLeft, ChevronRight, Sparkles, Filter, Layers, AlertCircle } from 'lucide-react';
 
 export default function LibraryPage() {
   const [activeCategoryId, setActiveCategoryId] = useState('');
@@ -108,6 +108,17 @@ export default function LibraryPage() {
               <ShieldCheck className="w-4 h-4 text-emerald-400 flex-shrink-0" />
               <span>100% Free & Legal Access via Official Government & Public Domain Portals</span>
             </div>
+          </div>
+        </div>
+
+        {/* Server Health Notice for NCERT NIC Outages */}
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-2xl p-4 text-xs text-amber-950 flex items-start space-x-3 shadow-sm">
+          <AlertCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+          <div className="space-y-0.5">
+            <span className="font-bold text-slate-900">📚 24/7 ई-लाइब्रेरी सर्वर बैकअप सूचना:</span>
+            <p className="text-slate-600 leading-relaxed">
+              NCERT का केंद्रीय सर्वर (<code>ncert.nic.in</code>) कभी-कभी सरकारी मेंटेनेंस या तकनीकी लोड के कारण <code>ERR_EMPTY_RESPONSE</code> देता है। छात्राओं की निरंतर पढ़ाई हेतु हमने पुस्तकों को <strong>Archive.org High-Speed Mirror</strong>, <strong>ePathshala Portal</strong> और <strong>DIKSHA</strong> से जोड़ दिया है — प्रत्येक पुस्तक कार्ड पर "ई-बुक तुरंत पढ़ें" या "अन्य सर्वर विकल्प" पर क्लिक करके बिना रुकावट तुरंत पढ़ें।
+            </p>
           </div>
         </div>
 
