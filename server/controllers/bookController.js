@@ -486,3 +486,34 @@ export const getDashboardStats = (req, res) => {
     });
   }
 };
+
+// GET /api/books/:id/pdf — Smart Direct PDF Streamer & Redirector (Zero 404 Guarantee)
+export const getBookPdf = async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const book = db.prepare('SELECT * FROM books WHERE id = ?').get(id);
+    if (!book) {
+      return res.status(404).json({ success: false, message: 'Book not found' });
+    }
+
+    // Increment view count asynchronously
+    try {
+      db.prepare('UPDATE books SET view_count = view_count + 1 WHERE id = ?').run(id);
+    } catch (e) {}
+
+    const directUrl = book.pdf_file_url;
+    if (directUrl && directUrl.startsWith('http')) {
+      return res.redirect(302, directUrl);
+    }
+
+    if (book.external_url && book.external_url.startsWith('http')) {
+      return res.redirect(302, book.external_url);
+    }
+
+    const fallbackUrl = `https://www.tiwariacademy.com/?s=${encodeURIComponent(book.title)}`;
+    return res.redirect(302, fallbackUrl);
+  } catch (err) {
+    console.error('Book PDF redirect error:', err);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};

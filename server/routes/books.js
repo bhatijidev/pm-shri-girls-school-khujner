@@ -9,7 +9,8 @@ import {
   deleteBook,
   getDashboardStats,
   getPublicStats,
-  recordBookView
+  recordBookView,
+  getBookPdf
 } from '../controllers/bookController.js';
 import authMiddleware from '../middleware/auth.js';
 
@@ -24,6 +25,7 @@ router.get('/by-category/:slug', getBooksByCategory);
 // Root and param routes
 router.get('/', getAllBooks);
 router.get('/:id', getBookById);
+router.get('/:id/pdf', getBookPdf);
 router.post('/:id/view', recordBookView);
 
 // Protected routes
