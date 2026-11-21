@@ -6,9 +6,20 @@ import { bookService, resolveMediaUrl } from '../../services/api';
 export default function BookCard({ book }) {
   const [imgError, setImgError] = useState(false);
   const [readsCount, setReadsCount] = useState(book.view_count || 0);
-  const targetUrl = resolveMediaUrl(book.pdf_file_url || book.external_url);
-  const isDirectPdf = targetUrl && (targetUrl.toLowerCase().endsWith('.pdf') || targetUrl.includes('/pdf/'));
-  const isExternal = book.link_type === 'external' && !isDirectPdf;
+
+  // NCERT blocks hotlinking of raw /textbook/pdf/ files from external websites, causing ERR_EMPTY_RESPONSE.
+  // Their official textbook portal (textbook.php) loads instantly (HTTP 200) with all chapters.
+  const isNcert = (book.pdf_file_url && book.pdf_file_url.includes('ncert.nic.in')) ||
+                  (book.external_url && book.external_url.includes('ncert.nic.in'));
+
+  const targetUrl = resolveMediaUrl(
+    isNcert
+      ? (book.external_url || book.pdf_file_url)
+      : (book.pdf_file_url || book.external_url)
+  );
+
+  const isDirectPdf = !isNcert && targetUrl && (targetUrl.toLowerCase().endsWith('.pdf') || targetUrl.includes('/pdf/'));
+  const isExternal = isNcert || (book.link_type === 'external' && !isDirectPdf);
 
   const handleReadClick = () => {
     setReadsCount((prev) => prev + 1);
@@ -130,7 +141,13 @@ export default function BookCard({ book }) {
             onClick={handleReadClick}
             className="w-full py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 transition-all duration-200 bg-gradient-to-r from-brand-orange to-brand-red text-white hover:opacity-95 shadow-md shadow-orange-500/20"
           >
-            {isDirectPdf ? (
+            {isNcert ? (
+              <>
+                <BookOpen className="w-4 h-4 text-white" />
+                <span>Read Textbook (NCERT संपूर्ण पुस्तक पढ़ें)</span>
+                <ExternalLink className="w-3.5 h-3.5 text-orange-200" />
+              </>
+            ) : isDirectPdf ? (
               <>
                 <BookOpen className="w-4 h-4 text-white" />
                 <span>Open PDF Book (सीधे PDF पढ़ें)</span>
