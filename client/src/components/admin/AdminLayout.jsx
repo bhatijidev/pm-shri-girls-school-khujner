@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, Bell, BookOpen, KeyRound, LogOut, ArrowLeft, Shield, User } from 'lucide-react';
+import { LayoutDashboard, Bell, BookOpen, KeyRound, LogOut, ArrowLeft, Shield, User, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Dashboard from './Dashboard';
 import NoticeManager from './NoticeManager';
 import BookManager from './BookManager';
+import InquiryManager from './InquiryManager';
 import { authService } from '../../services/api';
 
 export default function AdminLayout({ user, onLogout }) {
@@ -16,7 +17,8 @@ export default function AdminLayout({ user, onLogout }) {
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
     { id: 'notices', label: 'Notices & Circulars', icon: Bell },
-    { id: 'books', label: 'E-Library Catalog', icon: BookOpen }
+    { id: 'books', label: 'E-Library Catalog', icon: BookOpen },
+    { id: 'inquiries', label: 'Inquiries & Leads', icon: MessageSquare }
   ];
 
   const handlePasswordChange = async (e) => {
@@ -127,6 +129,7 @@ export default function AdminLayout({ user, onLogout }) {
         {activeTab === 'dashboard' && <Dashboard setActiveTab={setActiveTab} />}
         {activeTab === 'notices' && <NoticeManager />}
         {activeTab === 'books' && <BookManager />}
+        {activeTab === 'inquiries' && <InquiryManager />}
       </main>
 
       {/* Change Password Modal */}

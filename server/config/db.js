@@ -91,12 +91,28 @@ db.exec(`
     created_at TEXT DEFAULT (datetime('now'))
   );
 
+  CREATE TABLE IF NOT EXISTS contact_inquiries (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticket_id TEXT UNIQUE NOT NULL,
+    name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT,
+    inquiry_type TEXT,
+    message TEXT NOT NULL,
+    status TEXT DEFAULT 'pending' CHECK(status IN ('pending', 'contacted', 'resolved', 'archived')),
+    admin_notes TEXT,
+    created_at TEXT DEFAULT (datetime('now')),
+    updated_at TEXT DEFAULT (datetime('now'))
+  );
+
   -- High-performance database indexes
   CREATE INDEX IF NOT EXISTS idx_books_cat_active ON books(category_id, is_active);
   CREATE INDEX IF NOT EXISTS idx_books_class ON books(class_grade);
   CREATE INDEX IF NOT EXISTS idx_books_active ON books(is_active);
   CREATE INDEX IF NOT EXISTS idx_notices_active ON notices(is_active, published_at);
   CREATE INDEX IF NOT EXISTS idx_notices_urgent ON notices(is_urgent, is_active);
+  CREATE INDEX IF NOT EXISTS idx_inquiries_status ON contact_inquiries(status);
+  CREATE INDEX IF NOT EXISTS idx_inquiries_created ON contact_inquiries(created_at);
 `);
 
 // Clean up any legacy artificial seed view counts (> 5000 views) so views are 100% real and dynamic

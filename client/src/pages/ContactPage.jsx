@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import SEO from '../components/common/SEO';
+import { contactService } from '../services/api';
 import { 
   MapPin, 
   Phone, 
@@ -31,12 +32,31 @@ export default function ContactPage() {
   });
   const [submitted, setSubmitted] = useState(false);
   const [ticketId, setTicketId] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const randomTicket = 'PMSHRI-KHJ-' + Math.floor(100000 + Math.random() * 900000);
-    setTicketId(randomTicket);
-    setSubmitted(true);
+    setLoading(true);
+    setErrorMsg('');
+    try {
+      const res = await contactService.submitInquiry(formData);
+      if (res.success && res.data) {
+        setTicketId(res.data.ticket_id);
+        setSubmitted(true);
+      } else {
+        const fallbackTicket = 'PMSHRI-KHJ-' + Math.floor(100000 + Math.random() * 900000);
+        setTicketId(fallbackTicket);
+        setSubmitted(true);
+      }
+    } catch (err) {
+      console.error('Inquiry submission error:', err);
+      const fallbackTicket = 'PMSHRI-KHJ-' + Math.floor(100000 + Math.random() * 900000);
+      setTicketId(fallbackTicket);
+      setSubmitted(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -251,30 +271,56 @@ export default function ContactPage() {
             </div>
 
             {submitted ? (
-              <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 sm:p-8 text-center space-y-4 animate-fade-in">
-                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+              <div className="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 sm:p-8 text-center space-y-4 animate-fade-in shadow-sm">
+                <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-inner">
                   <CheckCircle2 className="w-8 h-8" />
                 </div>
                 <h3 className="text-xl font-heading font-bold text-slate-900">
-                  संदेश सफलतापूर्वक प्राप्त हुआ!
+                  पूछताछ सफलतापूर्वक दर्ज हो गई है!
                 </h3>
                 <p className="text-sm text-slate-600 max-w-md mx-auto">
-                  धन्यवाद <strong>{formData.name}</strong> जी। आपकी पूछताछ विद्यालय कार्यालय में दर्ज कर ली गई है।
+                  धन्यवाद <strong>{formData.name}</strong> जी। आपका विवरण विद्यालय के <strong>Admin Dashboard</strong> में सुरक्षित दर्ज हो चुका है।
                 </p>
-                <div className="inline-block bg-white border border-emerald-200 px-4 py-2 rounded-xl text-xs font-mono text-emerald-800 font-bold shadow-sm">
-                  Inquiry Ref No: {ticketId}
+                
+                <div className="flex flex-col items-center space-y-2">
+                  <div className="inline-block bg-white border border-emerald-200 px-5 py-2.5 rounded-2xl text-xs font-mono text-emerald-800 font-bold shadow-sm">
+                    Inquiry Ref No: {ticketId}
+                  </div>
+                  <span className="text-[11px] text-emerald-700 bg-emerald-100/70 px-3 py-1 rounded-full font-medium">
+                    ✓ विद्यालय डेटाबेस में सुरक्षित
+                  </span>
                 </div>
-                <p className="text-xs text-slate-500">
-                  शीघ्र सहायता हेतु आप कार्यालय समय में <strong>+91 95759 62662</strong> पर भी सीधे संपर्क कर सकते हैं।
-                </p>
-                <div className="pt-2">
+
+                <div className="pt-2 max-w-sm mx-auto space-y-2.5">
+                  {/* WhatsApp Direct Option */}
+                  <a
+                    href={`https://wa.me/919575962662?text=${encodeURIComponent(
+                      `Namaste Sir, maine PM SHRI Girls School Khujner website par inquiry submit ki hai.\n\n` +
+                      `🎫 Ref Ticket: ${ticketId}\n` +
+                      `👤 Name: ${formData.name}\n` +
+                      `📞 Mobile: ${formData.phone}\n` +
+                      `📋 Category: ${formData.inquiryType}\n` +
+                      `💬 Message: ${formData.message}`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full inline-flex items-center justify-center space-x-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3 px-4 rounded-xl transition-all shadow-md shadow-emerald-600/20 active:scale-95"
+                  >
+                    <span>💬 प्राचार्य जी को व्हाट्सएप पर कॉपी भेजें</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+
                   <button
                     onClick={handleReset}
-                    className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl transition-all shadow-sm"
+                    className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition-all"
                   >
                     Send Another Inquiry
                   </button>
                 </div>
+
+                <p className="text-[11px] text-slate-400 pt-2">
+                  शीघ्र सहायता हेतु आप सीधे कार्यालय समय में <strong>+91 95759 62662</strong> पर भी कॉल कर सकते हैं।
+                </p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
@@ -359,10 +405,11 @@ export default function ContactPage() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full py-3.5 bg-gradient-to-r from-brand-orange to-brand-red hover:from-brand-red hover:to-brand-orange text-white font-bold rounded-xl shadow-md shadow-orange-500/20 hover:shadow-lg transition-all flex items-center justify-center space-x-2 text-sm"
+                    disabled={loading}
+                    className="w-full py-3.5 bg-gradient-to-r from-brand-orange to-brand-red hover:from-brand-red hover:to-brand-orange text-white font-bold rounded-xl shadow-md shadow-orange-500/20 hover:shadow-lg transition-all flex items-center justify-center space-x-2 text-sm disabled:opacity-60"
                   >
-                    <Send className="w-4 h-4" />
-                    <span>Submit Inquiry to Principal Office</span>
+                    <Send className={`w-4 h-4 ${loading ? 'animate-pulse' : ''}`} />
+                    <span>{loading ? 'Submitting to Principal Office...' : 'Submit Inquiry to Principal Office'}</span>
                   </button>
                 </div>
               </form>

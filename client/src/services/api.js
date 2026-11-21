@@ -233,4 +233,24 @@ export const uploadService = {
   }
 };
 
+// Contact & Inquiry API
+export const contactService = {
+  submitInquiry: async (data) => {
+    const res = await api.post('/contact', data);
+    return res.data;
+  },
+  getInquiries: async (params = {}) => {
+    const res = await api.get('/contact', { params });
+    return res.data;
+  },
+  updateInquiryStatus: async (id, status, admin_notes) => {
+    const res = await api.patch(`/contact/${id}`, { status, admin_notes });
+    return res.data;
+  },
+  deleteInquiry: async (id) => {
+    const res = await api.delete(`/contact/${id}`);
+    return res.data;
+  }
+};
+
 export default api;
